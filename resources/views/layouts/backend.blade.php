@@ -206,17 +206,17 @@
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/datatables') ? ' active' : '' }}" href="/pages/datatables">
+                                    <a class="nav-main-link" target="_BLANK" href="https://insolvency.justice.gov.il/poshtim/Main/Tikim/wfrmListTikim.aspx">
                                         <span class="nav-main-link-name">בדיקת חדלות פירעון</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/slick') ? ' active' : '' }}" href="/pages/slick">
+                                    <a class="nav-main-link" target="_BLANK" href="https://www.gov.il/he/service/search_cooperative">
                                         <span class="nav-main-link-name">איתור אגודה שיתופית בישראל</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/blank') ? ' active' : '' }}" href="/pages/blank">
+                                    <a class="nav-main-link" target="_BLANK" href="https://apps.moital.gov.il/CooperativeSocieties">
                                         <span class="nav-main-link-name">איתור אגודה שיתופית בישראל</span>
                                     </a>
                                 </li>
