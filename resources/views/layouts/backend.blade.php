@@ -147,52 +147,52 @@
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/datatables') ? ' active' : '' }}" href="/pages/datatables">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/gsa') ? ' active' : '' }}" href="/company/datasets/gsa">
                                         <span class="nav-main-link-name">רשימת חברות ממשלתיות</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/slick') ? ' active' : '' }}" href="/pages/slick">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/ica_companies') ? ' active' : '' }}" href="/company/datasets/ica_companies">
                                         <span class="nav-main-link-name">מאגר חברות - רשם החברות</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/blank') ? ' active' : '' }}" href="/pages/blank">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/ica_partnerships') ? ' active' : '' }}" href="/company/datasets/ica_partnerships">
                                         <span class="nav-main-link-name">רשימת השותפויות</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/datatables') ? ' active' : '' }}" href="/pages/datatables">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/membership-in-liquidation') ? ' active' : '' }}" href="/company/datasets/membership-in-liquidation">
                                         <span class="nav-main-link-name">חברות בפרוק מרצון בהליך מזורז</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/slick') ? ' active' : '' }}" href="/pages/slick">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/moj-amutot1') ? ' active' : '' }}" href="/company/datasets/moj-amutot1">
                                         <span class="nav-main-link-name">מאגר עמותות לתועלת הציבור</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/blank') ? ' active' : '' }}" href="/pages/blank">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/moj-amutot2') ? ' active' : '' }}" href="/company/datasets/moj-amutot2">
                                         <span class="nav-main-link-name">מאגר חברות לתועלת הציבור</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/datatables') ? ' active' : '' }}" href="/pages/datatables">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/pr2018') ? ' active' : '' }}" href="/company/datasets/pr2018">
                                         <span class="nav-main-link-name">הכונס הרשמי  חברות</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/slick') ? ' active' : '' }}" href="/pages/slick">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/pinkashakablanim') ? ' active' : '' }}" href="/company/datasets/pinkashakablanim">
                                         <span class="nav-main-link-name">קבלנים רשומים להוציא את </span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/blank') ? ' active' : '' }}" href="/pages/blank">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/ica-changes') ? ' active' : '' }}" href="/company/datasets/ica-changes">
                                         <span class="nav-main-link-name">פרטי שינויים במאגר חברות חברות</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('pages/blank') ? ' active' : '' }}" href="/pages/blank">
+                                    <a class="nav-main-link{{ request()->is('company/datasets/limit') ? ' active' : '' }}" href="/company/datasets/limit">
                                         <span class="nav-main-link-name">תאגידים מוגבלים</span>
                                     </a>
                                 </li>
@@ -242,31 +242,31 @@
                         <!-- END Toggle Sidebar -->
 
                         <!-- Toggle Sidebar -->
-                        <a type="button" class="btn btn-dual {{ request()->is('person/*') ? 'open' : '' }}" href="/person">
+                        <a type="button" class="btn btn-dual {{ request()->is('person/*') ? 'active' : '' }}" href="/person">
                             <span class="ml-1 d-none d-sm-inline-block">אדם</span>
                         </a>
-                        <a type="button" class="btn btn-dual{{ request()->is('company/*') ? 'open' : '' }}" href="/company">
+                        <a type="button" class="btn btn-dual {{ request()->is('company*') ? 'active' : '' }}" href="/company">
                             <span class="ml-1 d-none d-sm-inline-block">תאגיד</span>
                         </a>
-                        <a type="button" class="btn btn-dual{{ request()->is('asearch/*') ? 'open' : '' }}" href="/asearch">
+                        <a type="button" class="btn btn-dual {{ request()->is('asearch/*') ? 'active' : '' }}" href="/asearch">
                             <span class="ml-1 d-none d-sm-inline-block">חיפוש מתקדם</span>
                         </a>
-                        <a type="button" class="btn btn-dual{{ request()->is('gsearch/*') ? 'open' : '' }}" href="/gsearch">
+                        <a type="button" class="btn btn-dual {{ request()->is('gsearch/*') ? 'active' : '' }}" href="/gsearch">
                             <span class="ml-1 d-none d-sm-inline-block">חיפוש גנאולוגי</span>
                         </a>
-                        <a type="button" class="btn btn-dual{{ request()->is('address/*') ? 'open' : '' }}" href="/address">
+                        <a type="button" class="btn btn-dual {{ request()->is('address/*') ? 'active' : '' }}" href="/address">
                             <span class="ml-1 d-none d-sm-inline-block">גושים וחלקות  וכתובת</span>
                         </a>
-                        <a type="button" class="btn btn-dual{{ request()->is('abadon/*') ? 'open' : '' }}" href="/abadon">
+                        <a type="button" class="btn btn-dual {{ request()->is('abadon/*') ? 'active' : '' }}" href="/abadon">
                             <span class="ml-1 d-none d-sm-inline-block">נטושים</span>
                         </a>
-                        <a type="button" class="btn btn-dual{{ request()->is('map/*') ? 'open' : '' }}" href="/map">
+                        <a type="button" class="btn btn-dual {{ request()->is('map/*') ? 'active' : '' }}" href="/map">
                             <span class="ml-1 d-none d-sm-inline-block">מפות</span>
                         </a>
-                        <a type="button" class="btn btn-dual{{ request()->is('research/*') ? 'open' : '' }}" href="/research">
+                        <a type="button" class="btn btn-dual {{ request()->is('research/*') ? 'active' : '' }}" href="/research">
                             <span class="ml-1 d-none d-sm-inline-block">מחקר</span>
                         </a>
-                        <a type="button" class="btn btn-dual{{ request()->is('link/*') ? 'open' : '' }}" href="/link">
+                        <a type="button" class="btn btn-dual {{ request()->is('link/*') ? 'active' : '' }}" href="/link">
                             <span class="ml-1 d-none d-sm-inline-block">קישורים</span>
                         </a>
                     </div>

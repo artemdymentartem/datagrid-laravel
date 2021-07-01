@@ -46,7 +46,7 @@
             </div>
             <div class="block-content block-content-full">
                 <!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/tables_datatables.js -->
-                <table class="table table-bordered table-striped table-vcenter js-dataTable-buttons">
+                <table class="table table-bordered table-striped table-vcenter table-responsive js-dataTable-buttons">
                     <thead>
                         <tr>
                             @foreach($indexes as $key => $index)
