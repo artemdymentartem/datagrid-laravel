@@ -133,14 +133,14 @@
                 <div class="content-side content-side-full">
                     <ul class="nav-main">
                         <li class="nav-main-item">
-                            <a class="nav-main-link{{ request()->is('dashboard') ? ' active' : '' }}" href="/dashboard">
+                            <a class="nav-main-link{{ request()->is('*dashboard') ? ' active' : '' }}" href="/dashboard">
                                 <i class="nav-main-link-icon si si-cursor"></i>
                                 <span class="nav-main-link-name">Main Datatable</span>
                                 <span class="nav-main-link-badge badge badge-pill badge-success">5</span>
                             </a>
                         </li>
                         <li class="nav-main-heading">Datasets</li>
-                        <li class="nav-main-item{{ request()->is('pages/*') ? ' open' : '' }}">
+                        <li class="nav-main-item{{ request()->is('*datasets/*') ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                 <i class="nav-main-link-icon si si-bulb"></i>
                                 <span class="nav-main-link-name">Datasets</span>
@@ -242,33 +242,33 @@
                         <!-- END Toggle Sidebar -->
 
                         <!-- Toggle Sidebar -->
-                        <button type="button" class="btn btn-dual">
+                        <a type="button" class="btn btn-dual {{ request()->is('person/*') ? 'open' : '' }}" href="/person">
                             <span class="ml-1 d-none d-sm-inline-block">אדם</span>
-                        </button>
-                        <button type="button" class="btn btn-dual">
+                        </a>
+                        <a type="button" class="btn btn-dual{{ request()->is('company/*') ? 'open' : '' }}" href="/company">
                             <span class="ml-1 d-none d-sm-inline-block">תאגיד</span>
-                        </button>
-                        <button type="button" class="btn btn-dual">
+                        </a>
+                        <a type="button" class="btn btn-dual{{ request()->is('asearch/*') ? 'open' : '' }}" href="/asearch">
                             <span class="ml-1 d-none d-sm-inline-block">חיפוש מתקדם</span>
-                        </button>
-                        <button type="button" class="btn btn-dual">
+                        </a>
+                        <a type="button" class="btn btn-dual{{ request()->is('gsearch/*') ? 'open' : '' }}" href="/gsearch">
                             <span class="ml-1 d-none d-sm-inline-block">חיפוש גנאולוגי</span>
-                        </button>
-                        <button type="button" class="btn btn-dual">
+                        </a>
+                        <a type="button" class="btn btn-dual{{ request()->is('address/*') ? 'open' : '' }}" href="/address">
                             <span class="ml-1 d-none d-sm-inline-block">גושים וחלקות  וכתובת</span>
-                        </button>
-                        <button type="button" class="btn btn-dual">
+                        </a>
+                        <a type="button" class="btn btn-dual{{ request()->is('abadon/*') ? 'open' : '' }}" href="/abadon">
                             <span class="ml-1 d-none d-sm-inline-block">נטושים</span>
-                        </button>
-                        <button type="button" class="btn btn-dual">
+                        </a>
+                        <a type="button" class="btn btn-dual{{ request()->is('map/*') ? 'open' : '' }}" href="/map">
                             <span class="ml-1 d-none d-sm-inline-block">מפות</span>
-                        </button>
-                        <button type="button" class="btn btn-dual">
+                        </a>
+                        <a type="button" class="btn btn-dual{{ request()->is('research/*') ? 'open' : '' }}" href="/research">
                             <span class="ml-1 d-none d-sm-inline-block">מחקר</span>
-                        </button>
-                        <button type="button" class="btn btn-dual">
+                        </a>
+                        <a type="button" class="btn btn-dual{{ request()->is('link/*') ? 'open' : '' }}" href="/link">
                             <span class="ml-1 d-none d-sm-inline-block">קישורים</span>
-                        </button>
+                        </a>
                     </div>
                     <!-- END Left Section -->
 
@@ -353,7 +353,6 @@
             <!-- END Footer -->
         </div>
         <!-- END Page Container -->
-
         <!-- Dashmix Core JS -->
         <script src="{{ mix('js/dashmix.app.js') }}"></script>
 
