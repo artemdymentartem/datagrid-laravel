@@ -245,7 +245,7 @@
                         <a type="button" class="btn btn-dual {{ request()->is('person/*') ? 'active' : '' }}" href="/person">
                             <span class="ml-1 d-none d-sm-inline-block">אדם</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('company*') ? 'active' : '' }}" href="/company">
+                        <a type="button" class="btn btn-dual {{ request()->is('company*') ? 'active' : '' }}" href="/company/datasets/gsa">
                             <span class="ml-1 d-none d-sm-inline-block">תאגיד</span>
                         </a>
                         <a type="button" class="btn btn-dual {{ request()->is('asearch/*') ? 'active' : '' }}" href="/asearch">
