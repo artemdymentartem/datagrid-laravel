@@ -22,3 +22,4 @@ Route::view('/pages/blank', 'pages.blank');
 Route::get('/company', 'CompanyController@index');
 Route::get('/company/datasets/{datasets}', 'CompanyController@datasets');
 Route::post('/company/reload-data/{datasets}', 'CompanyController@reload');
+Route::get('/company/get-datasets/{datasets}', 'CompanyController@getDatasets');

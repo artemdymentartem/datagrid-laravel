@@ -103,14 +103,14 @@ class CompanyController extends Controller
         }
 
         if (Schema::hasTable($db_table)) {
-            $records = DB::table($db_table)->get();
+            // $records = DB::table($db_table)->get();
             $fields = Schema::getColumnListing($db_table);
         }
         else {
             $fields=["default"];
         }
 
-        return view("datatable", compact("records", "fields", "table_name", "url", "tab_name", "datasets"));
+        return view("datatable", compact("fields", "table_name", "url", "tab_name", "datasets"));
     }
 
     public function reload($datasets)
@@ -215,7 +215,8 @@ class CompanyController extends Controller
                 }
                 $url = 'https://data.gov.il' . $result->result->_links->next;
             }
-        } while (count($records) > 0);
+        } while (false);
+        // } while (count($records) > 0);
 
         return response()->json(['success'=>'Data is successfully added']);
     }
@@ -228,6 +229,61 @@ class CompanyController extends Controller
     public function create()
     {
         //
+    }
+
+    public function getDatasets(Request $request, $datasets)
+    {
+        $db_table = "company_" . $datasets;
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+        
+        $fields = Schema::getColumnListing($db_table);
+        
+        // Total records
+        $totalRecords = DB::table($db_table)->select('count(*) as allcount')->count();
+        $totalRecordswithFilter = DB::table($db_table)
+            ->select('count(*) as allcount')
+            ->where(function ($query) use($searchValue, $fields) {
+                for ($i = 0; $i < count($fields); $i++){
+                $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                }      
+            })
+            ->count();
+
+        // Fetch records
+        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+            ->where(function ($query) use($searchValue, $fields) {
+                for ($i = 0; $i < count($fields); $i++){
+                $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                }      
+            })
+            ->select('*')
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
+
+        $sno = $start+1;
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $records
+        ); 
+
+        echo json_encode($response);
+        exit;
     }
 
     /**

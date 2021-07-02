@@ -4,21 +4,50 @@
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="{{ asset('js/plugins/datatables/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css') }}">
+
+   
 @endsection
 
 @section('js_after')
-    <!-- Page JS Plugins -->
-    <script src="{{ asset('js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('js/plugins/datatables/buttons/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('js/plugins/datatables/buttons/buttons.print.min.js') }}"></script>
     <script src="{{ asset('js/plugins/datatables/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('js/plugins/datatables/buttons/buttons.flash.min.js') }}"></script>
     <script src="{{ asset('js/plugins/datatables/buttons/buttons.colVis.min.js') }}"></script>
-
-    <!-- Page JS Code -->
-    <script src="{{ asset('js/pages/tables_datatables.js') }}"></script>
-    <script>
+<script>
+        $(document).ready(function(){
+            var fields = @json($fields);
+            var columns = [];
+            for (let index = 0; index < fields.length; index++) {
+                const element = fields[index];
+                columns.push({
+                    data: element
+                });
+            }
+            // DataTable
+            $('.js-dataTable-buttons').DataTable({
+                pageLength: 10,
+                lengthMenu: [[10, 20, 50], [10, 20, 50]],
+                autoWidth: false,
+                processing: true,
+                serverSide: true,
+                ajax: "{{ url('/company/get-datasets/'.$datasets) }}",
+                columns: columns,
+                buttons: [
+                    { extend: 'copy', className: 'btn btn-sm btn-primary' },
+                    { extend: 'csv', className: 'btn btn-sm btn-primary' },
+                    { extend: 'print', className: 'btn btn-sm btn-primary' },
+                    {
+                        text: 'Reload data',
+                        className: 'btn btn-sm btn-primary reload-data'
+                    }
+                ],
+                dom: "<'row'<'col-sm-12'<'text-center bg-body-light py-2 mb-2'B>>>" +
+                    "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
+            });
+        });
         $(document).on('click', '.reload-data', function(){
             Dashmix.loader('show', 'bg-gd-dusk');
             $.ajaxSetup({
@@ -81,13 +110,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($records as $key => $record)
-                        <tr>
-                            @foreach($fields as $key => $field)
-                                <td class="text-center">{{$record->$field}}</td>
-                            @endforeach
-                        </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>
