@@ -43,13 +43,17 @@ class pageTablesDatatables {
 
         // Init DataTable with Buttons
         jQuery('.js-dataTable-buttons').dataTable({
-            pageLength: 5,
-            lengthMenu: [[5, 10, 20], [5, 10, 20]],
+            pageLength: 10,
+            lengthMenu: [[10, 20, 50], [10, 20, 50]],
             autoWidth: false,
             buttons: [
                 { extend: 'copy', className: 'btn btn-sm btn-primary' },
                 { extend: 'csv', className: 'btn btn-sm btn-primary' },
-                { extend: 'print', className: 'btn btn-sm btn-primary' }
+                { extend: 'print', className: 'btn btn-sm btn-primary' },
+                {
+                    text: 'Reload data',
+                    className: 'btn btn-sm btn-primary reload-data'
+                }
             ],
             dom: "<'row'<'col-sm-12'<'text-center bg-body-light py-2 mb-2'B>>>" +
                 "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
