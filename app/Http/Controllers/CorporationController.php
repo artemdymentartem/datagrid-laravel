@@ -233,41 +233,52 @@ class CorporationController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
         
-        $fields = Schema::getColumnListing($db_table);
-        
-        // Total records
-        $totalRecords = DB::table($db_table)->select('count(*) as allcount')->count();
-        $totalRecordswithFilter = DB::table($db_table)
-            ->select('count(*) as allcount')
-            ->where(function ($query) use($searchValue, $fields) {
-                for ($i = 0; $i < count($fields); $i++){
-                $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
-                }      
-            })
-            ->count();
+        if (!Schema::hasTable($db_table)) {
+            $fields = Schema::getColumnListing($db_table);
+            
+            // Total records
+            $totalRecords = DB::table($db_table)->select('count(*) as allcount')->count();
+            $totalRecordswithFilter = DB::table($db_table)
+                ->select('count(*) as allcount')
+                ->where(function ($query) use($searchValue, $fields) {
+                    for ($i = 0; $i < count($fields); $i++){
+                    $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                    }      
+                })
+                ->count();
 
-        // Fetch records
-        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
-            ->where(function ($query) use($searchValue, $fields) {
-                for ($i = 0; $i < count($fields); $i++){
-                $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
-                }      
-            })
-            ->select('*')
-            ->skip($start)
-            ->take($rowperpage)
-            ->get();
+            // Fetch records
+            $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                ->where(function ($query) use($searchValue, $fields) {
+                    for ($i = 0; $i < count($fields); $i++){
+                    $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                    }      
+                })
+                ->select('*')
+                ->skip($start)
+                ->take($rowperpage)
+                ->get();
 
-        $sno = $start+1;
+            $sno = $start+1;
 
-        $response = array(
-            "draw" => intval($draw),
-            "iTotalRecords" => $totalRecords,
-            "iTotalDisplayRecords" => $totalRecordswithFilter,
-            "aaData" => $records
-        ); 
+            $response = array(
+                "draw" => intval($draw),
+                "iTotalRecords" => $totalRecords,
+                "iTotalDisplayRecords" => $totalRecordswithFilter,
+                "aaData" => $records
+            ); 
 
-        echo json_encode($response);
+            echo json_encode($response);
+        }
+        else {
+            $response = array(
+                "draw" => intval($draw),
+                "iTotalRecords" => 0,
+                "iTotalDisplayRecords" => 0,
+                "aaData" => []
+            ); 
+            echo json_encode($response);
+        }
         exit;
     }
 }

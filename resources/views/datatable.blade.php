@@ -66,7 +66,7 @@
                     window.location="/corporation/datasets/{{$datasets}}";
                 },
                 error: function(err) {
-                    alert(err);
+                    console.log(err);
                     Dashmix.loader('hide');
                     window.location="/corporation/datasets/{{$datasets}}";
                 }
