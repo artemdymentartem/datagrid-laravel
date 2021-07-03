@@ -97,7 +97,7 @@
         <!-- Dynamic Table with Export Buttons -->
         <div class="block block-rounded block-bordered">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Datasets Link : <a href="{{ $url }}" target="_blank">{{ $url }}</a></h3>
+                <h3 class="block-title"><a href="{{ $link }}" target="_blank">link here</a></h3>
             </div>
             <div class="block-content block-content-full">
                 <!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/tables_datatables.js -->
