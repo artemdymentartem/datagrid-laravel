@@ -233,7 +233,7 @@ class CorporationController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
         
-        if (!Schema::hasTable($db_table)) {
+        if (Schema::hasTable($db_table)) {
             $fields = Schema::getColumnListing($db_table);
             
             // Total records
