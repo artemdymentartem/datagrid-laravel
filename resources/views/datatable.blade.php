@@ -33,7 +33,7 @@
                 autoWidth: false,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ url('/company/get-datasets/'.$datasets) }}",
+                ajax: "{{ url('/corporation/get-datasets/'.$datasets) }}",
                 columns: columns,
                 buttons: [
                     { extend: 'copy', className: 'btn btn-sm btn-primary' },
@@ -56,19 +56,19 @@
                 }
             });
             $.ajax({
-                url: "{{ url('/company/reload-data/'.$datasets) }}",
+                url: "{{ url('/corporation/reload-data/'.$datasets) }}",
                 method: 'post',
                 data: {
                     "_token": "{{ csrf_token() }}",
                 },
                 success: function(result){
                     Dashmix.loader('hide');
-                    window.location="/company/datasets/{{$datasets}}";
+                    window.location="/corporation/datasets/{{$datasets}}";
                 },
                 error: function(err) {
                     alert(err);
                     Dashmix.loader('hide');
-                    window.location="/company/datasets/{{$datasets}}";
+                    window.location="/corporation/datasets/{{$datasets}}";
                 }
             });
         });

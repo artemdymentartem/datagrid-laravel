@@ -7,13 +7,8 @@ use GuzzleHttp\Client;
 use DB;
 use Schema;
 
-class CompanyController extends Controller
+class CorporationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $client = new \GuzzleHttp\Client();
@@ -39,7 +34,7 @@ class CompanyController extends Controller
     {
         $url = "";
         $table_name = "";
-        $db_table = "company_" . $datasets;
+        $db_table = "corporation_" . $datasets;
         $tab_name = "תאגיד";
 
         $records = [];
@@ -115,7 +110,7 @@ class CompanyController extends Controller
 
     public function reload($datasets)
     {
-        $db_table = "company_" . $datasets;
+        $db_table = "corporation_" . $datasets;
         Schema::dropIfExists($db_table);
         
         switch ($datasets) {
@@ -215,25 +210,15 @@ class CompanyController extends Controller
                 }
                 $url = 'https://data.gov.il' . $result->result->_links->next;
             }
-        } while (false);
-        // } while (count($records) > 0);
+        // } while (false);
+        } while (count($records) > 0);
 
         return response()->json(['success'=>'Data is successfully added']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     public function getDatasets(Request $request, $datasets)
     {
-        $db_table = "company_" . $datasets;
+        $db_table = "corporation_" . $datasets;
         $draw = $request->get('draw');
         $start = $request->get("start");
         $rowperpage = $request->get("length"); // Rows display per page
@@ -284,61 +269,5 @@ class CompanyController extends Controller
 
         echo json_encode($response);
         exit;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

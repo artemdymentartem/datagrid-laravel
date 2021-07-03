@@ -146,80 +146,36 @@
                                 <span class="nav-main-link-name">Datasets</span>
                             </a>
                             <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/gsa') ? ' active' : '' }}" href="/company/datasets/gsa">
-                                        <span class="nav-main-link-name">רשימת חברות ממשלתיות</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/ica_companies') ? ' active' : '' }}" href="/company/datasets/ica_companies">
-                                        <span class="nav-main-link-name">מאגר חברות - רשם החברות</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/ica_partnerships') ? ' active' : '' }}" href="/company/datasets/ica_partnerships">
-                                        <span class="nav-main-link-name">רשימת השותפויות</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/membership-in-liquidation') ? ' active' : '' }}" href="/company/datasets/membership-in-liquidation">
-                                        <span class="nav-main-link-name">חברות בפרוק מרצון בהליך מזורז</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/moj-amutot1') ? ' active' : '' }}" href="/company/datasets/moj-amutot1">
-                                        <span class="nav-main-link-name">מאגר עמותות לתועלת הציבור</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/moj-amutot2') ? ' active' : '' }}" href="/company/datasets/moj-amutot2">
-                                        <span class="nav-main-link-name">מאגר חברות לתועלת הציבור</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/pr2018') ? ' active' : '' }}" href="/company/datasets/pr2018">
-                                        <span class="nav-main-link-name">הכונס הרשמי  חברות</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/pinkashakablanim') ? ' active' : '' }}" href="/company/datasets/pinkashakablanim">
-                                        <span class="nav-main-link-name">קבלנים רשומים להוציא את </span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/ica-changes') ? ' active' : '' }}" href="/company/datasets/ica-changes">
-                                        <span class="nav-main-link-name">פרטי שינויים במאגר חברות חברות</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->is('company/datasets/limit') ? ' active' : '' }}" href="/company/datasets/limit">
-                                        <span class="nav-main-link-name">תאגידים מוגבלים</span>
-                                    </a>
-                                </li>
+                                @if(request()->is('*person/*'))
+                                    <!-- First tab datasets links -->
+                                    @include('includes.datasets.person')
+                                    <!-- First tab datasets links -->
+                                @endif
+
+                                @if(request()->is('*corporation/*'))
+                                    <!-- Second tab datasets links -->
+                                    @include('includes.datasets.corporation')
+                                    <!-- Second tab datasets links -->
+                                @endif
                             </ul>
                         </li>
                         <li class="nav-main-heading">Simple links</li>
-                        <li class="nav-main-item{{ request()->is('pages/*') ? ' open' : '' }}">
+                        <li class="nav-main-item{{ request()->is('simplelinks/*') ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                 <i class="nav-main-link-icon si si-bulb"></i>
                                 <span class="nav-main-link-name">Simple links</span>
                             </a>
                             <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link" target="_BLANK" href="https://insolvency.justice.gov.il/poshtim/Main/Tikim/wfrmListTikim.aspx">
-                                        <span class="nav-main-link-name">בדיקת חדלות פירעון</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link" target="_BLANK" href="https://www.gov.il/he/service/search_cooperative">
-                                        <span class="nav-main-link-name">איתור אגודה שיתופית בישראל</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link" target="_BLANK" href="https://apps.moital.gov.il/CooperativeSocieties">
-                                        <span class="nav-main-link-name">איתור אגודה שיתופית בישראל</span>
-                                    </a>
-                                </li>
+                                @if(request()->is('*person/*'))
+                                    <!-- First tab datasets links -->
+                                    @include('includes.simplelinks.person')
+                                    <!-- First tab datasets links -->
+                                @endif
+                                @if(request()->is('*corporation/*'))
+                                    <!-- Second tab datasets links -->
+                                    @include('includes.simplelinks.corporation')
+                                    <!-- Second tab datasets links -->
+                                @endif
                             </ul>
                         </li>
                     </ul>
@@ -242,10 +198,10 @@
                         <!-- END Toggle Sidebar -->
 
                         <!-- Toggle Sidebar -->
-                        <a type="button" class="btn btn-dual {{ request()->is('person/*') ? 'active' : '' }}" href="/person">
+                        <a type="button" class="btn btn-dual {{ request()->is('person/*') ? 'active' : '' }}" href="/person/datasets/pr2018">
                             <span class="ml-1 d-none d-sm-inline-block">אדם</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('company*') ? 'active' : '' }}" href="/company/datasets/gsa">
+                        <a type="button" class="btn btn-dual {{ request()->is('corporation*') ? 'active' : '' }}" href="/corporation/datasets/gsa">
                             <span class="ml-1 d-none d-sm-inline-block">תאגיד</span>
                         </a>
                         <a type="button" class="btn btn-dual {{ request()->is('asearch/*') ? 'active' : '' }}" href="/asearch">
