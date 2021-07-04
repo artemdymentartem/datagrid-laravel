@@ -196,11 +196,26 @@ class CorporationController extends Controller
                 $fields = $result->result->fields;
                 $records = $result->result->records;
 
+                $GLOBALS['exchange_list'] = array();
+                $GLOBALS['changed_list'] = array();
+
                 if (!Schema::hasTable($db_table)) {
                     Schema::create($db_table, function($table) use($fields)
                     {
                         foreach ($fields as $key => $field) {
-                            $value = str_replace(".", "-" , $field->id);
+                            $mystring = $field->id;
+                            $findme   = '.';
+                            $pos = strpos($mystring, $findme);
+
+                            if ($pos === false) {
+                                $value = $mystring;
+                            }
+                            else {
+                                $value = str_replace(".", "-", $mystring);
+                                
+                                array_push($GLOBALS['exchange_list'],json_encode($mystring));
+                                array_push($GLOBALS['changed_list'],json_encode($value));
+                            }
                             switch ($field->type) {
                                 case 'int':
                                     $table->integer($value)->nullable();
@@ -217,8 +232,17 @@ class CorporationController extends Controller
                 }
 
                 foreach ($records as $key => $record) {
-                    $decoded = str_replace(".", "-" , json_encode($record));
-                    $resArr = json_decode($decoded, true);
+                    $record_str = json_encode($record);
+                    
+                    if (count($GLOBALS['exchange_list']) > 0) {
+                        for ($i=0; $i < count($GLOBALS['exchange_list']); $i++) {
+                            $exchange = $GLOBALS['exchange_list'][$i];
+                            $changed = $GLOBALS['changed_list'][$i];
+                            $record_str = str_replace($exchange, $changed , $record_str);
+                        }
+                    }
+                    
+                    $resArr = json_decode($record_str, true); 
                     DB::table($db_table)->insert($resArr);
                 }
                 $url = 'https://data.gov.il' . $result->result->_links->next;
