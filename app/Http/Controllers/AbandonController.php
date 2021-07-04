@@ -118,10 +118,9 @@ class AbandonController extends Controller
                         }
                     });
                 }
-
+                
                 foreach ($records as $key => $record) {
-                    $decoded = str_replace(".", "-" , json_encode($record));
-                    $resArr = json_decode($decoded, true);
+                    $resArr = json_decode(json_encode($record), true);
                     DB::table($db_table)->insert($resArr);
                 }
                 $url = 'https://data.gov.il' . $result->result->_links->next;

@@ -291,18 +291,6 @@
                                         <span><i class="far fa-fw fa-envelope mr-1"></i> Inbox</span>
                                         <span class="badge badge-primary">3</span>
                                     </a>
-                                    <a class="dropdown-item" href="javascript:void(0)">
-                                        <i class="far fa-fw fa-file-alt mr-1"></i> Invoices
-                                    </a>
-                                    <div role="separator" class="dropdown-divider"></div>
-
-                                    <!-- Toggle Side Overlay -->
-                                    <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
-                                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="layout" data-action="side_overlay_toggle">
-                                        <i class="far fa-fw fa-building mr-1"></i> Settings
-                                    </a>
-                                    <!-- END Side Overlay -->
-
                                     <div role="separator" class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="javascript:void(0)">
                                         <i class="far fa-fw fa-arrow-alt-circle-left mr-1"></i> Sign Out
