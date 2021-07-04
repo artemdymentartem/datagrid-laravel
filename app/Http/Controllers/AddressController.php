@@ -86,7 +86,9 @@ class AddressController extends Controller
             $fields=["default"];
         }
 
-        return view("datatable", compact("fields", "table_name", "link", "tab_name", "datasets"));
+        $tab_en = "address";
+
+        return view("datatable", compact("fields", "table_name", "link", "tab_name", "datasets", "tab_en"));
     }
 
     public function reload($datasets)
