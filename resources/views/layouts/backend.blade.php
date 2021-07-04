@@ -163,10 +163,16 @@
                                     @include('includes.datasets.address')
                                     <!-- Fifth tab datasets links -->
                                 @endif
+
+                                @if(request()->is('*abandon/*'))
+                                    <!-- Sixth tab datasets links -->
+                                    @include('includes.datasets.abandon')
+                                    <!-- Sixth tab datasets links -->
+                                @endif
                             </ul>
                         </li>
                         <li class="nav-main-heading">Simple links</li>
-                        <li class="nav-main-item{{ request()->is(['advanced-search', 'general-search']) ? ' open' : '' }}">
+                        <li class="nav-main-item{{ request()->is(['advanced-search', 'general-search', 'map', 'link']) ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                 <i class="nav-main-link-icon si si-bulb"></i>
                                 <span class="nav-main-link-name">Simple links</span>
@@ -196,6 +202,21 @@
                                     <!-- Fifth tab datasets links -->
                                     @include('includes.simplelinks.address')
                                     <!-- Fifth tab datasets links -->
+                                @endif
+                                @if(request()->is('*abandon*'))
+                                    <!-- Sixth tab datasets links -->
+                                    @include('includes.simplelinks.abandon')
+                                    <!-- Sixth tab datasets links -->
+                                @endif
+                                @if(request()->is('*map*'))
+                                    <!-- Seventh tab datasets links -->
+                                    @include('includes.simplelinks.map')
+                                    <!-- Seventh tab datasets links -->
+                                @endif
+                                @if(request()->is('*link*'))
+                                    <!-- Nine tab datasets links -->
+                                    @include('includes.simplelinks.link')
+                                    <!-- Nine tab datasets links -->
                                 @endif
                             </ul>
                         </li>
@@ -234,16 +255,16 @@
                         <a type="button" class="btn btn-dual {{ request()->is('address*') ? 'active' : '' }}" href="/address/datasets/tabu_asset">
                             <span class="ml-1 d-none d-sm-inline-block">גושים וחלקות  וכתובת</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('abadon/*') ? 'active' : '' }}" href="/abadon">
+                        <a type="button" class="btn btn-dual {{ request()->is('abandon*') ? 'active' : '' }}" href="/abandon/datasets/ezvonot2018">
                             <span class="ml-1 d-none d-sm-inline-block">נטושים</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('map/*') ? 'active' : '' }}" href="/map">
+                        <a type="button" class="btn btn-dual {{ request()->is('map*') ? 'active' : '' }}" href="/map">
                             <span class="ml-1 d-none d-sm-inline-block">מפות</span>
                         </a>
                         <a type="button" class="btn btn-dual {{ request()->is('research/*') ? 'active' : '' }}" href="/research">
                             <span class="ml-1 d-none d-sm-inline-block">מחקר</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('link/*') ? 'active' : '' }}" href="/link">
+                        <a type="button" class="btn btn-dual {{ request()->is('link*') ? 'active' : '' }}" href="/link">
                             <span class="ml-1 d-none d-sm-inline-block">קישורים</span>
                         </a>
                     </div>
