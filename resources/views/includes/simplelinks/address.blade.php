@@ -8,3 +8,18 @@
         <span class="nav-main-link-name">Google Earth View</span>
     </a>
 </li>
+<li class="nav-main-item">
+    <a class="nav-main-link" target="_BLANK" href="https://data.gov.il/dataset/sheetkshape">
+        <span class="nav-main-link-name">מפתחות גושים</span>
+    </a>
+</li>
+<li class="nav-main-item">
+    <a class="nav-main-link" target="_BLANK" href="https://data.gov.il/dataset/br7-shimur">
+        <span class="nav-main-link-name">מבנים לשימור ב"ש</span>	
+    </a>
+</li>
+<li class="nav-main-item">
+    <a class="nav-main-link" target="_BLANK" href="https://data.gov.il/dataset/br7-zoning">
+        <span class="nav-main-link-name">יעודי קרקע</span>	
+    </a>
+</li>

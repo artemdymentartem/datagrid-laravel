@@ -1,19 +1,4 @@
 <li class="nav-main-item">
-    <a class="nav-main-link{{ request()->is('address/datasets/sheetkshape') ? ' active' : '' }}" href="https://data.gov.il/dataset/sheetkshape" target="_blank">
-        <span class="nav-main-link-name">מפתחות גושים</span>
-    </a>
-</li>
-<li class="nav-main-item">
-    <a class="nav-main-link{{ request()->is('address/datasets/br7-shimur') ? ' active' : '' }}" href="https://data.gov.il/dataset/br7-shimur" target="_blank">
-        <span class="nav-main-link-name">מבנים לשימור ב"ש</span>	
-    </a>
-</li>
-<li class="nav-main-item">
-    <a class="nav-main-link{{ request()->is('address/datasets/br7-shimur') ? ' active' : '' }}" href="https://data.gov.il/dataset/br7-zoning" target="_blank">
-        <span class="nav-main-link-name">יעודי קרקע</span>	
-    </a>
-</li>
-<li class="nav-main-item">
     <a class="nav-main-link{{ request()->is('address/datasets/tabu_asset') ? ' active' : '' }}" href="/address/datasets/tabu_asset">
         <span class="nav-main-link-name">רשימת הנכסים בפנקסי המקרקעין על פי סוג בעלות</span>
     </a>

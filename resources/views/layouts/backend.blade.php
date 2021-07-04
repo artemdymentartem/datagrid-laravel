@@ -166,7 +166,7 @@
                             </ul>
                         </li>
                         <li class="nav-main-heading">Simple links</li>
-                        <li class="nav-main-item{{ request()->is('simplelinks/*') ? ' open' : '' }}">
+                        <li class="nav-main-item{{ request()->is(['advanced-search', 'general-search']) ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                 <i class="nav-main-link-icon si si-bulb"></i>
                                 <span class="nav-main-link-name">Simple links</span>

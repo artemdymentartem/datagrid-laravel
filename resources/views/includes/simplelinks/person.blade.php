@@ -33,3 +33,14 @@
         <span class="nav-main-link-name">בדיקת חדלות פירעון</span>
     </a>
 </li>
+
+<li class="nav-main-item">
+    <a class="nav-main-link" target="_BLANK" href="https://www.gov.il/he/departments/dynamiccollectors/cpa-search?skip=0">
+        <span class="nav-main-link-name">מרשם רואי חשבון</span>
+    </a>
+</li>
+<li class="nav-main-item">
+    <a class="nav-main-link" target="_BLANK" href="https://apps.moital.gov.il/WebServicesHandlers/EngineersAndArchitects.aspx">
+        <span class="nav-main-link-name">פנקס המהנדסים</span>
+    </a>
+</li>
