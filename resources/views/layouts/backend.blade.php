@@ -157,6 +157,12 @@
                                     @include('includes.datasets.corporation')
                                     <!-- Second tab datasets links -->
                                 @endif
+
+                                @if(request()->is('*address/*'))
+                                    <!-- Fifth tab datasets links -->
+                                    @include('includes.datasets.address')
+                                    <!-- Fifth tab datasets links -->
+                                @endif
                             </ul>
                         </li>
                         <li class="nav-main-heading">Simple links</li>
@@ -175,6 +181,21 @@
                                     <!-- Second tab datasets links -->
                                     @include('includes.simplelinks.corporation')
                                     <!-- Second tab datasets links -->
+                                @endif
+                                @if(request()->is('*advanced-search*'))
+                                    <!-- Third tab datasets links -->
+                                    @include('includes.simplelinks.advanced-search')
+                                    <!-- Third tab datasets links -->
+                                @endif
+                                @if(request()->is('*general-search*'))
+                                    <!-- Fourth tab datasets links -->
+                                    @include('includes.simplelinks.general-search')
+                                    <!-- Fourth tab datasets links -->
+                                @endif
+                                @if(request()->is('*address*'))
+                                    <!-- Fifth tab datasets links -->
+                                    @include('includes.simplelinks.address')
+                                    <!-- Fifth tab datasets links -->
                                 @endif
                             </ul>
                         </li>
@@ -198,19 +219,19 @@
                         <!-- END Toggle Sidebar -->
 
                         <!-- Toggle Sidebar -->
-                        <a type="button" class="btn btn-dual {{ request()->is('person/*') ? 'active' : '' }}" href="/person/datasets/pr2018">
+                        <a type="button" class="btn btn-dual {{ request()->is('person*') ? 'active' : '' }}" href="/person/datasets/pr2018">
                             <span class="ml-1 d-none d-sm-inline-block">אדם</span>
                         </a>
                         <a type="button" class="btn btn-dual {{ request()->is('corporation*') ? 'active' : '' }}" href="/corporation/datasets/gsa">
                             <span class="ml-1 d-none d-sm-inline-block">תאגיד</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('asearch/*') ? 'active' : '' }}" href="/asearch">
+                        <a type="button" class="btn btn-dual {{ request()->is('advanced-search*') ? 'active' : '' }}" href="/advanced-search">
                             <span class="ml-1 d-none d-sm-inline-block">חיפוש מתקדם</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('gsearch/*') ? 'active' : '' }}" href="/gsearch">
+                        <a type="button" class="btn btn-dual {{ request()->is('general-search*') ? 'active' : '' }}" href="/general-search">
                             <span class="ml-1 d-none d-sm-inline-block">חיפוש גנאולוגי</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('address/*') ? 'active' : '' }}" href="/address">
+                        <a type="button" class="btn btn-dual {{ request()->is('address*') ? 'active' : '' }}" href="/address/datasets/tabu_asset">
                             <span class="ml-1 d-none d-sm-inline-block">גושים וחלקות  וכתובת</span>
                         </a>
                         <a type="button" class="btn btn-dual {{ request()->is('abadon/*') ? 'active' : '' }}" href="/abadon">

@@ -16,9 +16,6 @@ Route::view('/', 'landing');
 Route::match(['get', 'post'], '/dashboard', function(){
     return view('dashboard');
 });
-Route::view('/pages/slick', 'pages.slick');
-Route::view('/pages/datatables', 'pages.datatables');
-Route::view('/pages/blank', 'pages.blank');
 
 Route::get('/corporation', 'CorporationController@index');
 Route::get('/corporation/datasets/{datasets}', 'CorporationController@datasets');
@@ -29,3 +26,12 @@ Route::get('/person', 'PersonController@index');
 Route::get('/person/datasets/{datasets}', 'PersonController@datasets');
 Route::post('/person/reload-data/{datasets}', 'PersonController@reload');
 Route::get('/person/get-datasets/{datasets}', 'PersonController@getDatasets');
+
+Route::get('/advanced-search', 'AdvancedSearchController@index');
+
+Route::get('/general-search', 'GeneralSearchController@index');
+
+Route::get('/address', 'AddressController@index');
+Route::get('/address/datasets/{datasets}', 'AddressController@datasets');
+Route::post('/address/reload-data/{datasets}', 'AddressController@reload');
+Route::get('/address/get-datasets/{datasets}', 'AddressController@getDatasets');
