@@ -81,23 +81,23 @@ class PersonController extends Controller
         
         switch ($datasets) {
             case 'pr2018':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000";
                 $table_name = "הכונס הרשמי  פרטיים";
                 break;
             case 'notary':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=3ead5fae-3513-46f8-a458-959ea3e035ae&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=3ead5fae-3513-46f8-a458-959ea3e035ae&limit=1000";
                 $table_name = "רשימת הנוטריונים";
                 break;
             case 'yerusha':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=7691b4a2-fe1d-44ec-9f1b-9f2f0a15381b&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=7691b4a2-fe1d-44ec-9f1b-9f2f0a15381b&limit=1000";
                 $table_name = "בקשות לרשם הירושות";
                 break;    
             case 'pinkashakablanim':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8&limit=1000";
                 $table_name = "קבלנים רשומים";
                 break; 
             default:
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000";
                 $table_name = "הכונס הרשמי  פרטיים";
                 break;
         }

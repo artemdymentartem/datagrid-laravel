@@ -90,32 +90,32 @@ class AddressController extends Controller
         
         switch ($datasets) {
             case 'tabu_asset':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=a1a91496-d692-4420-bc21-3487600b71a5&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=a1a91496-d692-4420-bc21-3487600b71a5&limit=1000";
                 $table_name = "שימת הנכסים בפנקסי המקרקעין על פי סוג בעלות";
                 break;
             
             case 'hitkadmuthabnia':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=1ec45809-5927-430a-9b30-77f77f528ce3&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=1ec45809-5927-430a-9b30-77f77f528ce3&limit=1000";
                 $table_name = "תקדמות בניה";
                 break;
             
             case '321':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=a7296d1a-f8c9-4b70-96c2-6ebb4352f8e3&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=a7296d1a-f8c9-4b70-96c2-6ebb4352f8e3&limit=1000";
                 $table_name = "רשימת השותפויות";
                 break;
                 
             case '826':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=15b92ae9-9371-4c34-99bb-4a26c5087f65&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=15b92ae9-9371-4c34-99bb-4a26c5087f65&limit=1000";
                 $table_name = "מטה דאטה על שכבות";
                 break;
 
             case 'israel-streets-synom':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=bf185c7f-1a4e-4662-88c5-fa118a244bda&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=bf185c7f-1a4e-4662-88c5-fa118a244bda&limit=1000";
                 $table_name = "רשימת רחובות בישראל + סינומים";
                 break;
 
             default:
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=a1a91496-d692-4420-bc21-3487600b71a5&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=a1a91496-d692-4420-bc21-3487600b71a5&limit=1000";
                 $table_name = "שימת הנכסים בפנקסי המקרקעין על פי סוג בעלות";
                 break;
         }

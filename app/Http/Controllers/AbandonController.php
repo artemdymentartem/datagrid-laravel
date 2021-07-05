@@ -70,12 +70,12 @@ class AbandonController extends Controller
         
         switch ($datasets) {
             case 'ezvonot2018':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000";
                 $table_name = "עזבונות לטובת המדינה";
                 break;
             
             default:
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000";
                 $table_name = "עזבונות לטובת המדינה";
                 break;
         }
