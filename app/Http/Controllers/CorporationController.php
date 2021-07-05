@@ -196,12 +196,11 @@ class CorporationController extends Controller
                 $fields = $result->result->fields;
                 $records = $result->result->records;
 
-                $GLOBALS['exchange_list'] = array();
-                $GLOBALS['changed_list'] = array();
-
                 if (!Schema::hasTable($db_table)) {
                     Schema::create($db_table, function($table) use($fields)
                     {
+                        $GLOBALS['exchange_list'] = array();
+                        $GLOBALS['changed_list'] = array();
                         foreach ($fields as $key => $field) {
                             $mystring = $field->id;
                             $findme   = '.';
