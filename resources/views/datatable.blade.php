@@ -68,7 +68,7 @@
                 error: function(err) {
                     console.log(err);
                     Dashmix.loader('hide');
-                    // window.location="/{{$tab_en}}/datasets/{{$datasets}}";
+                    window.location="/{{$tab_en}}/datasets/{{$datasets}}";
                 }
             });
         });
