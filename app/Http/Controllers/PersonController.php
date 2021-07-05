@@ -32,8 +32,6 @@ class PersonController extends Controller
 
     public function datasets($datasets)
     {
-        $url = "";
-        $table_name = "";
         $db_table = "person_" . $datasets;
         $tab_name = "אדם";
 
@@ -42,27 +40,22 @@ class PersonController extends Controller
         
         switch ($datasets) {
             case 'pr2018':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000";
                 $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
                 $table_name = "הכונס הרשמי  פרטיים";
                 break;
             case 'notary':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=3ead5fae-3513-46f8-a458-959ea3e035ae&limit=1000";
                 $link = "https://data.gov.il/dataset/notary/resource/3ead5fae-3513-46f8-a458-959ea3e035ae";
                 $table_name = "רשימת הנוטריונים";
                 break;
             case 'yerusha':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=7691b4a2-fe1d-44ec-9f1b-9f2f0a15381b&limit=1000";
                 $link = "https://data.gov.il/dataset/yerusha/resource/7691b4a2-fe1d-44ec-9f1b-9f2f0a15381b";
                 $table_name = "בקשות לרשם הירושות";
                 break;    
             case 'pinkashakablanim':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8&limit=1000";
                 $link = "https://data.gov.il/dataset/pinkashakablanim/resource/4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8";
                 $table_name = "קבלנים רשומים";
                 break; 
             default:
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000";
                 $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
                 $table_name = "הכונס הרשמי  פרטיים";
                 break;
@@ -88,23 +81,23 @@ class PersonController extends Controller
         
         switch ($datasets) {
             case 'pr2018':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000000";
                 $table_name = "הכונס הרשמי  פרטיים";
                 break;
             case 'notary':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=3ead5fae-3513-46f8-a458-959ea3e035ae&limit=1000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=3ead5fae-3513-46f8-a458-959ea3e035ae&limit=1000000";
                 $table_name = "רשימת הנוטריונים";
                 break;
             case 'yerusha':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=7691b4a2-fe1d-44ec-9f1b-9f2f0a15381b&limit=1000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=7691b4a2-fe1d-44ec-9f1b-9f2f0a15381b&limit=1000000";
                 $table_name = "בקשות לרשם הירושות";
                 break;    
             case 'pinkashakablanim':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8&limit=1000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8&limit=1000000";
                 $table_name = "קבלנים רשומים";
                 break; 
             default:
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000000";
                 $table_name = "הכונס הרשמי  פרטיים";
                 break;
         }

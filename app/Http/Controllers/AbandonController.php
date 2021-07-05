@@ -32,8 +32,6 @@ class AbandonController extends Controller
 
     public function datasets($datasets)
     {
-        $url = "";
-        $table_name = "";
         $db_table = "abandon_" . $datasets;
         $tab_name = "גושים וחלקות  וכתובת";
 
@@ -42,13 +40,11 @@ class AbandonController extends Controller
         
         switch ($datasets) {
             case 'ezvonot2018':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000";
                 $link = "https://data.gov.il/dataset/ezvonot2018/resource/4dc59d4d-26ea-49c6-b83c-b019addc6ec9";
                 $table_name = "עזבונות לטובת המדינה";
                 break;
             
             default:
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000";
                 $link = "https://data.gov.il/dataset/ezvonot2018/resource/4dc59d4d-26ea-49c6-b83c-b019addc6ec9";
                 $table_name = "עזבונות לטובת המדינה";
                 break;
@@ -74,14 +70,12 @@ class AbandonController extends Controller
         
         switch ($datasets) {
             case 'ezvonot2018':
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000";
-                $link = "https://data.gov.il/dataset/ezvonot2018/resource/4dc59d4d-26ea-49c6-b83c-b019addc6ec9";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000000";
                 $table_name = "עזבונות לטובת המדינה";
                 break;
             
             default:
-                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000";
-                $link = "https://data.gov.il/dataset/ezvonot2018/resource/4dc59d4d-26ea-49c6-b83c-b019addc6ec9";
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4dc59d4d-26ea-49c6-b83c-b019addc6ec9&limit=1000000";
                 $table_name = "עזבונות לטובת המדינה";
                 break;
         }
