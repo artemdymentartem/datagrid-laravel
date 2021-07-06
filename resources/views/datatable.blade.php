@@ -10,12 +10,13 @@
 
 @section('js_after')
 <script src="{{ asset('js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/buttons.flash.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datatables/buttons/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datatables/buttons/buttons.print.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datatables/buttons/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datatables/buttons/buttons.flash.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datatables/buttons/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('js/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 <script>
         $(document).ready(function(){
             var fields = @json($fields);
@@ -49,6 +50,7 @@
             });
         });
         $(document).on('click', '.reload-data', function(){
+            Dashmix.helpers('notify', {type: 'success', icon: 'fa fa-reload mr-1', message: 'Reload data started in background!'});
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -61,11 +63,12 @@
                     "_token": "{{ csrf_token() }}",
                 },
                 success: function(result){
-                    window.location="/{{$tab_en}}/datasets/{{$datasets}}";
+                    Dashmix.helpers('notify', {type: 'success', icon: 'fa fa-check mr-1', message: 'Reload data finished successfully!'});
+                    setTimeout(window.location="/{{$tab_en}}/datasets/{{$datasets}}", 2000);
                 },
                 error: function(err) {
-                    console.log(err);
-                    window.location="/{{$tab_en}}/datasets/{{$datasets}}";
+                    Dashmix.helpers('notify', {type: 'error', icon: 'fa fa-times mr-1', message: 'Reload data has some errors!'});
+                    setTimeout(window.location="/{{$tab_en}}/datasets/{{$datasets}}", 2000);
                 }
             });
         });
