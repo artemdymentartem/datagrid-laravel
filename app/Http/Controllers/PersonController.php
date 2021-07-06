@@ -173,7 +173,7 @@ class PersonController extends Controller
 
     public function getDatasets(Request $request, $datasets)
     {
-        $db_table = "corporation_" . $datasets;
+        $db_table = "person_" . $datasets;
         $draw = $request->get('draw');
         $start = $request->get("start");
         $rowperpage = $request->get("length"); // Rows display per page
