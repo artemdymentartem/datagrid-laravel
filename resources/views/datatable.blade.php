@@ -49,7 +49,6 @@
             });
         });
         $(document).on('click', '.reload-data', function(){
-            Dashmix.loader('show', 'bg-gd-dusk');
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -62,12 +61,10 @@
                     "_token": "{{ csrf_token() }}",
                 },
                 success: function(result){
-                    Dashmix.loader('hide');
                     window.location="/{{$tab_en}}/datasets/{{$datasets}}";
                 },
                 error: function(err) {
                     console.log(err);
-                    Dashmix.loader('hide');
                     window.location="/{{$tab_en}}/datasets/{{$datasets}}";
                 }
             });
