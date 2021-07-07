@@ -27,6 +27,10 @@
                     data: element
                 });
             }
+            $('.js-dataTable-buttons thead td').each( function () {
+                var title = $(this).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            });
             // DataTable
             $('.js-dataTable-buttons').DataTable({
                 pageLength: 10,
@@ -42,7 +46,21 @@
                     { extend: 'print', className: 'btn btn-sm btn-primary' },
                 ],
                 dom: "<'row'<'col-sm-12'<'text-center bg-body-light py-2 mb-2'B>>>" +
-                    "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
+                    "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                initComplete: function () {
+                    // Apply the search
+                    this.api().columns().every( function () {
+                        var that = this;
+        
+                        $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                            if ( that.search() !== this.value ) {
+                                that
+                                    .search( this.value )
+                                    .draw();
+                            }
+                        });
+                    });
+                }
             });
         });
     </script>
@@ -78,6 +96,11 @@
                         <tr>
                             @foreach($fields as $key => $field)
                                 <th class="text-center" style="width: 80px;">{{$field}}</th>
+                            @endforeach
+                        </tr>
+                        <tr>
+                            @foreach($fields as $key => $field)
+                                <td></td>
                             @endforeach
                         </tr>
                     </thead>
