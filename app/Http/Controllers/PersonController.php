@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use GuzzleHttp\Client;
 use DB;
 use Schema;
@@ -13,34 +14,31 @@ class PersonController extends Controller
     {
         $fields = [
             "_id", 
-            "number", 
-            "name", 
-            "name2", 
-            "type", 
-            "status", 
-            "desc", 
-            "purpose", 
-            "date", 
-            "is_government", 
-            "limit", 
-            "fertilizer", 
-            "year", 
-            "city", 
-            "street", 
-            "house", 
-            "zip", 
-            "address2", 
-            "country", 
-            "zip2", 
-            "status2"
+            "field1",
+            "field2",
+            "field3",
+            "field4",
+            "field5",
+            "field6",
+            "field7",
+            "field8",
+            "field9",
+            "field10",
+            "field11",
+            "field12",
+            "field13",
+            "field14",
+            "field15",
+            "field16",
+            "field17",
+            "field18",
         ];
         $tab_name = "תאגיד";
         $table_name = "Main Datatable";
-        $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
-        $tab_en = "corporation";
+        $tab_en = "person";
         
 
-        return view("dashboard", compact("fields", "table_name", "link", "tab_name", "tab_en"));
+        return view("dashboard", compact("fields", "table_name", "tab_name", "tab_en"));
     }
 
     public function datasets($datasets)
@@ -252,7 +250,10 @@ class PersonController extends Controller
 
     public function getMainDatasets(Request $request)
     {
+        $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18"];
+        
         $db_tables = ["person_pr2018", "person_notary", "person_yerusha", "person_pinkashakablanim"];
+        $db_table = "person_pr2018";
         $draw = $request->get('draw');
         $start = $request->get("start");
         $rowperpage = $request->get("length"); // Rows display per page
@@ -267,6 +268,10 @@ class PersonController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
         
+        $data = array();
+        $row_count = 0;
+        $row_filter_count = 0;
+
         foreach ($db_tables as $key => $db_table) {
             if (Schema::hasTable($db_table)) {
                 $fields = Schema::getColumnListing($db_table);
@@ -286,35 +291,41 @@ class PersonController extends Controller
                 $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
                     ->where(function ($query) use($searchValue, $fields) {
                         for ($i = 0; $i < count($fields); $i++){
-                        $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                            $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
                         }      
                     })
                     ->select('*')
-                    ->skip($start)
-                    ->take($rowperpage)
                     ->get();
     
-                $sno = $start+1;
-    
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => $totalRecords,
-                    "iTotalDisplayRecords" => $totalRecordswithFilter,
-                    "aaData" => $records
-                ); 
-    
-                echo json_encode($response);
-            }
-            else {
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => 0,
-                    "iTotalDisplayRecords" => 0,
-                    "aaData" => []
-                ); 
-                echo json_encode($response);
+                foreach ($records as $key => $record) {
+                    $table_values = ["", "","","","","","","","","","","","","","","","","",""];
+                    for ($i = 0; $i < count($fields); $i++){
+                        $index = $fields[$i];
+                        $table_values[$i] = $record->$index;
+                    }
+                    $data[] = array_combine($table_fields, $table_values);
+                }
+
+                $row_count += $totalRecords;
+                $row_filter_count += $totalRecordswithFilter;
             }
         }
+
+        $collection = collect($data);
+        
+        $result = $collection
+                    ->skip($start)
+                    ->take($rowperpage);
+        $sno = $start+1;
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $row_count,
+            "iTotalDisplayRecords" => $row_filter_count,
+            "aaData" => $result
+        ); 
+
+        echo json_encode($response);
         
         exit;
     }
