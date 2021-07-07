@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use GuzzleHttp\Client;
 use DB;
 use Schema;
@@ -12,28 +11,8 @@ class PersonController extends Controller
 {
     public function index()
     {
-        $fields = [
-            "_id", 
-            "field1",
-            "field2",
-            "field3",
-            "field4",
-            "field5",
-            "field6",
-            "field7",
-            "field8",
-            "field9",
-            "field10",
-            "field11",
-            "field12",
-            "field13",
-            "field14",
-            "field15",
-            "field16",
-            "field17",
-            "field18",
-        ];
-        $tab_name = "תאגיד";
+        $fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18"];
+        $tab_name = "אדם";
         $table_name = "Main Datatable";
         $tab_en = "person";
         
@@ -268,11 +247,7 @@ class PersonController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
         
-        $data = array();
-        $row_count = 0;
-        $row_filter_count = 0;
-
-        foreach ($db_tables as $key => $db_table) {
+        // foreach ($db_tables as $key => $db_table) {
             if (Schema::hasTable($db_table)) {
                 $fields = Schema::getColumnListing($db_table);
                 
@@ -295,8 +270,12 @@ class PersonController extends Controller
                         }      
                     })
                     ->select('*')
+                    ->skip($start)
+                    ->take($rowperpage)
                     ->get();
     
+                $sno = $start+1;
+                $data = array();
                 foreach ($records as $key => $record) {
                     $table_values = ["", "","","","","","","","","","","","","","","","","",""];
                     for ($i = 0; $i < count($fields); $i++){
@@ -305,27 +284,26 @@ class PersonController extends Controller
                     }
                     $data[] = array_combine($table_fields, $table_values);
                 }
-
-                $row_count += $totalRecords;
-                $row_filter_count += $totalRecordswithFilter;
+    
+                $response = array(
+                    "draw" => intval($draw),
+                    "iTotalRecords" => $totalRecords,
+                    "iTotalDisplayRecords" => $totalRecordswithFilter,
+                    "aaData" => $data
+                ); 
+    
+                echo json_encode($response);
             }
-        }
-
-        $collection = collect($data);
-        
-        $result = $collection
-                    ->skip($start)
-                    ->take($rowperpage);
-        $sno = $start+1;
-
-        $response = array(
-            "draw" => intval($draw),
-            "iTotalRecords" => $row_count,
-            "iTotalDisplayRecords" => $row_filter_count,
-            "aaData" => $result
-        ); 
-
-        echo json_encode($response);
+            else {
+                $response = array(
+                    "draw" => intval($draw),
+                    "iTotalRecords" => 0,
+                    "iTotalDisplayRecords" => 0,
+                    "aaData" => []
+                ); 
+                echo json_encode($response);
+            }
+        // }
         
         exit;
     }

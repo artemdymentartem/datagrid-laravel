@@ -11,33 +11,11 @@ class AbandonController extends Controller
 {
     public function index()
     {
-        $fields = [
-            "_id", 
-            "number", 
-            "name", 
-            "name2", 
-            "type", 
-            "status", 
-            "desc", 
-            "purpose", 
-            "date", 
-            "is_government", 
-            "limit", 
-            "fertilizer", 
-            "year", 
-            "city", 
-            "street", 
-            "house", 
-            "zip", 
-            "address2", 
-            "country", 
-            "zip2", 
-            "status2"
-        ];
-        $tab_name = "תאגיד";
+        $fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8"];
+        $tab_name = "גושים וחלקות  וכתובת";
         $table_name = "Main Datatable";
         $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
-        $tab_en = "corporation";
+        $tab_en = "abandon";
         
 
         return view("dashboard", compact("fields", "table_name", "link", "tab_name", "tab_en"));
@@ -225,6 +203,87 @@ class AbandonController extends Controller
             ); 
             echo json_encode($response);
         }
+        exit;
+    }
+
+    public function getMainDatasets(Request $request)
+    {
+        $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8"];
+        
+        $db_tables = ["abandon_ezvonot2018"];
+        $db_table = "abandon_ezvonot2018";
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+        
+        // foreach ($db_tables as $key => $db_table) {
+            if (Schema::hasTable($db_table)) {
+                $fields = Schema::getColumnListing($db_table);
+                
+                // Total records
+                $totalRecords = DB::table($db_table)->select('count(*) as allcount')->count();
+                $totalRecordswithFilter = DB::table($db_table)
+                    ->select('count(*) as allcount')
+                    ->where(function ($query) use($searchValue, $fields) {
+                        for ($i = 0; $i < count($fields); $i++){
+                        $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                        }      
+                    })
+                    ->count();
+    
+                // Fetch records
+                $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                    ->where(function ($query) use($searchValue, $fields) {
+                        for ($i = 0; $i < count($fields); $i++){
+                            $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                        }      
+                    })
+                    ->select('*')
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->get();
+    
+                $sno = $start+1;
+                $data = array();
+                foreach ($records as $key => $record) {
+                    $table_values = ["","","","","","","",""];
+                    for ($i = 0; $i < count($fields); $i++){
+                        $index = $fields[$i];
+                        $table_values[$i] = $record->$index;
+                    }
+                    $data[] = array_combine($table_fields, $table_values);
+                }
+    
+                $response = array(
+                    "draw" => intval($draw),
+                    "iTotalRecords" => $totalRecords,
+                    "iTotalDisplayRecords" => $totalRecordswithFilter,
+                    "aaData" => $data
+                ); 
+    
+                echo json_encode($response);
+            }
+            else {
+                $response = array(
+                    "draw" => intval($draw),
+                    "iTotalRecords" => 0,
+                    "iTotalDisplayRecords" => 0,
+                    "aaData" => []
+                ); 
+                echo json_encode($response);
+            }
+        // }
+        
         exit;
     }
 }
