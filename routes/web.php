@@ -17,15 +17,16 @@ Route::match(['get', 'post'], '/dashboard', function(){
     return view('dashboard');
 });
 
+Route::get('/person', 'PersonController@index');
+Route::get('/person/get-main-datasets', 'PersonController@getMainDatasets');
+Route::get('/person/datasets/{datasets}', 'PersonController@datasets');
+Route::post('/person/reload-data/{datasets}', 'PersonController@reload');
+Route::get('/person/get-datasets/{datasets}', 'PersonController@getDatasets');
+
 Route::get('/corporation', 'CorporationController@index');
 Route::get('/corporation/datasets/{datasets}', 'CorporationController@datasets');
 Route::post('/corporation/reload-data/{datasets}', 'CorporationController@reload');
 Route::get('/corporation/get-datasets/{datasets}', 'CorporationController@getDatasets');
-
-Route::get('/person', 'PersonController@index');
-Route::get('/person/datasets/{datasets}', 'PersonController@datasets');
-Route::post('/person/reload-data/{datasets}', 'PersonController@reload');
-Route::get('/person/get-datasets/{datasets}', 'PersonController@getDatasets');
 
 Route::get('/advanced-search', 'AdvancedSearchController@index');
 

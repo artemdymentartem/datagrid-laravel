@@ -12,7 +12,7 @@
                     <h2 class="h3 font-w300 text-muted mb-5 invisible" data-toggle="appear" data-timeout="150">
                     </h2>
                     <span class="m-2 d-inline-block invisible" data-toggle="appear" data-timeout="300">
-                        <a class="btn btn-hero-success" href="/dashboard">
+                        <a class="btn btn-hero-success" href="/person">
                             <i class="fa fa-fw fa-sign-in-alt mr-1"></i> Enter Dashboard
                         </a>
                     </span>

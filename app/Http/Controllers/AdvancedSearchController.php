@@ -8,6 +8,6 @@ class AdvancedSearchController extends Controller
 {
     public function index()
     {
-        return view("dashboard");
+        return view("simple");
     }
 }

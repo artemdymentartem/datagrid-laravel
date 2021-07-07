@@ -11,23 +11,36 @@ class AddressController extends Controller
 {
     public function index()
     {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://data.gov.il/api/3/action/datastore_search?resource_id=be5b7935-3922-45d4-9638-08871b17ec95');
-
-        $response->getStatusCode(); // 200
-        $response->getHeaderLine('content-type'); // 'application/json; charset=utf8'
-        $result = json_decode($response->getBody()); // '{"id": 1420053, "name": "guzzle", ...}'
+        $fields = [
+            "_id", 
+            "number", 
+            "name", 
+            "name2", 
+            "type", 
+            "status", 
+            "desc", 
+            "purpose", 
+            "date", 
+            "is_government", 
+            "limit", 
+            "fertilizer", 
+            "year", 
+            "city", 
+            "street", 
+            "house", 
+            "zip", 
+            "address2", 
+            "country", 
+            "zip2", 
+            "status2"
+        ];
+        $tab_name = "תאגיד";
+        $table_name = "Main Datatable";
+        $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
+        $tab_en = "corporation";
         
-        $datas = $result->result->records;
-        $indexes = [];
 
-        if (count($datas) > 0)  {
-            $json = $datas[0];
-            $resArr = json_decode( json_encode($json), true);
-            $indexes = array_keys($resArr);
-        }
-
-        return view("datatable", compact("datas", "indexes"));
+        return view("dashboard", compact("fields", "table_name", "link", "tab_name", "tab_en"));
     }
 
     public function datasets($datasets)

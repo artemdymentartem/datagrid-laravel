@@ -133,44 +133,80 @@
                 <div class="content-side content-side-full">
                     <ul class="nav-main">
                         <li class="nav-main-item">
-                            <a class="nav-main-link{{ request()->is('*dashboard') ? ' active' : '' }}" href="/dashboard">
-                                <i class="nav-main-link-icon si si-cursor"></i>
-                                <span class="nav-main-link-name">Main Datatable</span>
-                                <span class="nav-main-link-badge badge badge-pill badge-success">5</span>
-                            </a>
+                            @if(request()->is('*person*'))
+                                <!-- First tab datasets links -->
+                                <a class="nav-main-link{{ request()->is('*person') ? ' active' : '' }}" href="/person">
+                                    <i class="nav-main-link-icon si si-cursor"></i>
+                                    <span class="nav-main-link-name">Main Datatable</span>
+                                    <span class="nav-main-link-badge badge badge-pill badge-success">5</span>
+                                </a>
+                                <!-- First tab datasets links -->
+                            @endif
+
+                            @if(request()->is('*corporation*'))
+                                <!-- Second tab datasets links -->
+                                <a class="nav-main-link{{ request()->is('*corporation') ? ' active' : '' }}" href="/corporation">
+                                    <i class="nav-main-link-icon si si-cursor"></i>
+                                    <span class="nav-main-link-name">Main Datatable</span>
+                                    <span class="nav-main-link-badge badge badge-pill badge-success">5</span>
+                                </a>
+                                <!-- Second tab datasets links -->
+                            @endif
+
+                            @if(request()->is('*address*'))
+                                <!-- Fifth tab datasets links -->
+                                <a class="nav-main-link{{ request()->is('*address') ? ' active' : '' }}" href="/address">
+                                    <i class="nav-main-link-icon si si-cursor"></i>
+                                    <span class="nav-main-link-name">Main Datatable</span>
+                                    <span class="nav-main-link-badge badge badge-pill badge-success">5</span>
+                                </a>
+                                <!-- Fifth tab datasets links -->
+                            @endif
+
+                            @if(request()->is('*abandon*'))
+                                <!-- Sixth tab datasets links -->
+                                <a class="nav-main-link{{ request()->is('*abandon') ? ' active' : '' }}" href="/abandon">
+                                    <i class="nav-main-link-icon si si-cursor"></i>
+                                    <span class="nav-main-link-name">Main Datatable</span>
+                                    <span class="nav-main-link-badge badge badge-pill badge-success">5</span>
+                                </a>
+                                <!-- Sixth tab datasets links -->
+                            @endif
                         </li>
-                        <li class="nav-main-heading">Datasets</li>
-                        <li class="nav-main-item{{ request()->is('*datasets/*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon si si-bulb"></i>
-                                <span class="nav-main-link-name">Datasets</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                @if(request()->is('*person/*'))
-                                    <!-- First tab datasets links -->
-                                    @include('includes.datasets.person')
-                                    <!-- First tab datasets links -->
-                                @endif
+                        @if(!request()->is(['advanced-search', 'general-search', 'map', 'link']))
+                            <li class="nav-main-heading">Datasets</li>
+                            <li class="nav-main-item{{ request()->is('*datasets/*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon si si-bulb"></i>
+                                    <span class="nav-main-link-name">Datasets</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    @if(request()->is('*person*'))
+                                        <!-- First tab datasets links -->
+                                        @include('includes.datasets.person')
+                                        <!-- First tab datasets links -->
+                                    @endif
 
-                                @if(request()->is('*corporation/*'))
-                                    <!-- Second tab datasets links -->
-                                    @include('includes.datasets.corporation')
-                                    <!-- Second tab datasets links -->
-                                @endif
+                                    @if(request()->is('*corporation*'))
+                                        <!-- Second tab datasets links -->
+                                        @include('includes.datasets.corporation')
+                                        <!-- Second tab datasets links -->
+                                    @endif
 
-                                @if(request()->is('*address/*'))
-                                    <!-- Fifth tab datasets links -->
-                                    @include('includes.datasets.address')
-                                    <!-- Fifth tab datasets links -->
-                                @endif
+                                    @if(request()->is('*address*'))
+                                        <!-- Fifth tab datasets links -->
+                                        @include('includes.datasets.address')
+                                        <!-- Fifth tab datasets links -->
+                                    @endif
 
-                                @if(request()->is('*abandon/*'))
-                                    <!-- Sixth tab datasets links -->
-                                    @include('includes.datasets.abandon')
-                                    <!-- Sixth tab datasets links -->
-                                @endif
-                            </ul>
-                        </li>
+                                    @if(request()->is('*abandon*'))
+                                        <!-- Sixth tab datasets links -->
+                                        @include('includes.datasets.abandon')
+                                        <!-- Sixth tab datasets links -->
+                                    @endif
+                                </ul>
+                            </li>
+                        @endif
                         <li class="nav-main-heading">Simple links</li>
                         <li class="nav-main-item{{ request()->is(['advanced-search', 'general-search', 'map', 'link']) ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
@@ -178,12 +214,12 @@
                                 <span class="nav-main-link-name">Simple links</span>
                             </a>
                             <ul class="nav-main-submenu">
-                                @if(request()->is('*person/*'))
+                                @if(request()->is('*person*'))
                                     <!-- First tab datasets links -->
                                     @include('includes.simplelinks.person')
                                     <!-- First tab datasets links -->
                                 @endif
-                                @if(request()->is('*corporation/*'))
+                                @if(request()->is('*corporation*'))
                                     <!-- Second tab datasets links -->
                                     @include('includes.simplelinks.corporation')
                                     <!-- Second tab datasets links -->
@@ -240,10 +276,10 @@
                         <!-- END Toggle Sidebar -->
 
                         <!-- Toggle Sidebar -->
-                        <a type="button" class="btn btn-dual {{ request()->is('person*') ? 'active' : '' }}" href="/person/datasets/pr2018">
+                        <a type="button" class="btn btn-dual {{ request()->is('person*') ? 'active' : '' }}" href="/person">
                             <span class="ml-1 d-none d-sm-inline-block">אדם</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('corporation*') ? 'active' : '' }}" href="/corporation/datasets/gsa">
+                        <a type="button" class="btn btn-dual {{ request()->is('corporation*') ? 'active' : '' }}" href="/corporation">
                             <span class="ml-1 d-none d-sm-inline-block">תאגיד</span>
                         </a>
                         <a type="button" class="btn btn-dual {{ request()->is('advanced-search*') ? 'active' : '' }}" href="/advanced-search">
@@ -252,16 +288,16 @@
                         <a type="button" class="btn btn-dual {{ request()->is('general-search*') ? 'active' : '' }}" href="/general-search">
                             <span class="ml-1 d-none d-sm-inline-block">חיפוש גנאולוגי</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('address*') ? 'active' : '' }}" href="/address/datasets/tabu_asset">
+                        <a type="button" class="btn btn-dual {{ request()->is('address*') ? 'active' : '' }}" href="/address">
                             <span class="ml-1 d-none d-sm-inline-block">גושים וחלקות  וכתובת</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('abandon*') ? 'active' : '' }}" href="/abandon/datasets/ezvonot2018">
+                        <a type="button" class="btn btn-dual {{ request()->is('abandon*') ? 'active' : '' }}" href="/abandon">
                             <span class="ml-1 d-none d-sm-inline-block">נטושים</span>
                         </a>
                         <a type="button" class="btn btn-dual {{ request()->is('map*') ? 'active' : '' }}" href="/map">
                             <span class="ml-1 d-none d-sm-inline-block">מפות</span>
                         </a>
-                        <a type="button" class="btn btn-dual {{ request()->is('research/*') ? 'active' : '' }}" href="/research">
+                        <a type="button" class="btn btn-dual {{ request()->is('research/*') ? 'active' : '' }}" href="#">
                             <span class="ml-1 d-none d-sm-inline-block">מחקר</span>
                         </a>
                         <a type="button" class="btn btn-dual {{ request()->is('link*') ? 'active' : '' }}" href="/link">
