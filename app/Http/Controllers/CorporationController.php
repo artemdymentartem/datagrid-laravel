@@ -329,6 +329,13 @@ class CorporationController extends Controller
                         $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
                         }      
                     })
+                    ->where(function ($query) use($fields, $columnName_arr) {
+                        for ($i = 0; $i < count($fields); $i++){
+                            if ($columnName_arr[$i]['search']['value'] != "") {
+                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                            }
+                        }  
+                    })
                     ->count();
     
                 // Fetch records
@@ -337,6 +344,13 @@ class CorporationController extends Controller
                         for ($i = 0; $i < count($fields); $i++){
                             $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
                         }      
+                    })
+                    ->where(function ($query) use($fields, $columnName_arr) {
+                        for ($i = 0; $i < count($fields); $i++){
+                            if ($columnName_arr[$i]['search']['value'] != "") {
+                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                            }
+                        }  
                     })
                     ->select('*')
                     ->skip($start)

@@ -244,6 +244,7 @@ class PersonController extends Controller
 
         $columnIndex = $columnIndex_arr[0]['column']; // Column index
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
         
@@ -260,6 +261,13 @@ class PersonController extends Controller
                         $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
                         }      
                     })
+                    ->where(function ($query) use($fields, $columnName_arr) {
+                        for ($i = 0; $i < count($fields); $i++){
+                            if ($columnName_arr[$i]['search']['value'] != "") {
+                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                            }
+                        }  
+                    })
                     ->count();
     
                 // Fetch records
@@ -268,6 +276,13 @@ class PersonController extends Controller
                         for ($i = 0; $i < count($fields); $i++){
                             $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
                         }      
+                    })
+                    ->where(function ($query) use($fields, $columnName_arr) {
+                        for ($i = 0; $i < count($fields); $i++){
+                            if ($columnName_arr[$i]['search']['value'] != "") {
+                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                            }
+                        }  
                     })
                     ->select('*')
                     ->skip($start)

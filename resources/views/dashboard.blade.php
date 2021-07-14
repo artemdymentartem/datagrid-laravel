@@ -27,18 +27,24 @@
                     data: element
                 });
             }
-            $('.js-dataTable-buttons thead td').each( function () {
+            $('.js-dataTable-buttons tfoot th').each( function () {
                 var title = $(this).text();
-                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+                $(this).html( '<input type="text" id="' + title + '" name="' + title + '" placeholder="Search '+title+'" />' );
             });
             // DataTable
-            $('.js-dataTable-buttons').DataTable({
+            var table = $('.js-dataTable-buttons').DataTable({
                 pageLength: 10,
                 lengthMenu: [[10, 20, 50], [10, 20, 50]],
                 autoWidth: false,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ url('/'.$tab_en.'/get-main-datasets/') }}",
+                ajax: {
+                    url: "{{ url('/'.$tab_en.'/get-main-datasets/') }}",
+                    data: function ( d ) {
+                        d._token = $('meta[name="csrf-token"]').attr('content');
+                    },
+                    type: "POST"
+                },
                 columns: columns,
                 buttons: [
                     { extend: 'copy', className: 'btn btn-sm btn-primary' },
@@ -48,13 +54,12 @@
                 dom: "<'row'<'col-sm-12'<'text-center bg-body-light py-2 mb-2'B>>>" +
                     "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 initComplete: function () {
-                    // Apply the search
                     this.api().columns().every( function () {
-                        var that = this;
+                        var column = this;
         
                         $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                            if ( that.search() !== this.value ) {
-                                that
+                            if ( column.search() !== this.value ) {
+                                column
                                     .search( this.value )
                                     .draw();
                             }
@@ -62,6 +67,7 @@
                     });
                 }
             });
+            
         });
     </script>
 @endsection
@@ -98,14 +104,16 @@
                                 <th class="text-center" style="width: 80px;">{{$field}}</th>
                             @endforeach
                         </tr>
-                        <tr>
-                            @foreach($fields as $key => $field)
-                                <td></td>
-                            @endforeach
-                        </tr>
                     </thead>
                     <tbody>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            @foreach($fields as $key => $field)
+                                <th class="text-center" style="width: 80px;">{{$field}}</th>
+                            @endforeach
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
