@@ -36,7 +36,7 @@
 
 <li class="nav-main-item">
     <a class="nav-main-link" target="_BLANK" href="https://www.gov.il/he/departments/dynamiccollectors/cpa-search?skip=0">
-        <span class="nav-main-link-name">מרשם רואי חשבון</span>
+        <span class="nav-main-link-name">חיפוש רואי חשבון</span>
     </a>
 </li>
 <li class="nav-main-item">

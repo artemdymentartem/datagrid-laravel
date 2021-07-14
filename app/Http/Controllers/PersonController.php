@@ -45,6 +45,10 @@ class PersonController extends Controller
                 $link = "https://data.gov.il/dataset/pinkashakablanim/resource/4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8";
                 $table_name = "קבלנים רשומים";
                 break; 
+            case 'cpalist':
+                $link = "https://data.gov.il/dataset/cpalist/resource/7e86def9-0899-45f4-8942-d6fe38482b1a";
+                $table_name = "מרשם רואי חשבון";
+                break; 
             default:
                 $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
                 $table_name = "הכונס הרשמי  פרטיים";
@@ -86,6 +90,10 @@ class PersonController extends Controller
                 $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8&limit=1000";
                 $table_name = "קבלנים רשומים";
                 break; 
+            case 'cpalist':
+                $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=7e86def9-0899-45f4-8942-d6fe38482b1a&limit=1000";
+                $table_name = "מרשם רואי חשבון";
+                break;
             default:
                 $url = "https://data.gov.il/api/3/action/datastore_search?resource_id=2156937e-524a-4511-907d-5470a6a5264f&limit=1000";
                 $table_name = "הכונס הרשמי  פרטיים";
@@ -231,7 +239,7 @@ class PersonController extends Controller
     {
         $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18"];
         
-        $db_tables = ["person_pr2018", "person_notary", "person_yerusha", "person_pinkashakablanim"];
+        $db_tables = ["person_pr2018", "person_notary", "person_yerusha", "person_pinkashakablanim", "person_cpalist"];
         $db_table = "person_pr2018";
         $draw = $request->get('draw');
         $start = $request->get("start");

@@ -18,3 +18,8 @@
         <span class="nav-main-link-name">קבלנים רשומים</span>
     </a>
 </li>
+<li class="nav-main-item">
+    <a class="nav-main-link{{ request()->is('person/datasets/cpalist') ? ' active' : '' }}" href="/person/datasets/cpalist">
+        <span class="nav-main-link-name">מרשם רואי חשבון</span>
+    </a>
+</li>
