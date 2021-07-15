@@ -10,6 +10,6 @@
 </li>
 <li class="nav-main-item">
     <a class="nav-main-link" target="_BLANK" href="https://www.myheritage.co.il/research">
-        <span class="nav-main-link-name">חיפוש ב</span>
+        <span class="nav-main-link-name">חיפוש ב MyHeritage</span>
     </a>
 </li>
