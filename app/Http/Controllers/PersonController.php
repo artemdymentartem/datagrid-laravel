@@ -11,7 +11,7 @@ class PersonController extends Controller
 {
     public function index()
     {
-        $fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18"];
+        $fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18", "google", "facebook"];
         $tab_name = "אדם";
         $table_name = "Main Datatable";
         $tab_en = "person";
@@ -237,7 +237,7 @@ class PersonController extends Controller
 
     public function getMainDatasets(Request $request)
     {
-        $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18"];
+        $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18","google","facebook"];
         
         $db_tables = ["person_pr2018", "person_notary", "person_yerusha", "person_pinkashakablanim", "person_cpalist"];
         $db_table = "person_pr2018";
@@ -300,7 +300,7 @@ class PersonController extends Controller
                 $sno = $start+1;
                 $data = array();
                 foreach ($records as $key => $record) {
-                    $table_values = ["", "","","","","","","","","","","","","","","","","",""];
+                    $table_values = ["", "","","","","","","","","","","","","","","","","","","",""];
                     for ($i = 0; $i < count($fields); $i++){
                         $index = $fields[$i];
                         $table_values[$i] = $record->$index;

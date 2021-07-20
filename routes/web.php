@@ -48,3 +48,5 @@ Route::get('/abandon/get-datasets/{datasets}', 'AbandonController@getDatasets');
 Route::get('/map', 'MapController@index');
 
 Route::get('/link', 'LinkController@index');
+
+Route::get('/zip', 'AddressController@zip');
