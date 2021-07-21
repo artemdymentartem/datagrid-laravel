@@ -342,44 +342,4 @@ class AddressController extends Controller
         
         exit;
     }
-
-    public function zip(Request $request)
-    {
-        // $zipper = new \Madnest\Madzipper\Madzipper;
-
-        $url = 'https://data.gov.il/dataset/sheetkshape/resource/e4beff76-0913-464f-8e6c-4162e5fec9a3/download/sheet_k.zip';
-        $name = substr($url, strrpos($url, '/') + 1);
-
-        if(file_put_contents( $name,htmlspecialchars(file_get_contents($url)))) {
-            echo "File downloaded successfully";
-        }
-        else {
-            echo "File downloading failed.";
-        }
-        // $name = substr($url, strrpos($url, '/') + 1);
-        
-        // $curl = curl_init();
-        // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/octet-stream'));
-        // curl_setopt($curl, CURLOPT_URL, $url);
-        // curl_setopt($curl, CURLOPT_FILETIME, true);
-        // // curl_setopt($curl, CURLOPT_NOBODY, true);
-        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($curl, CURLOPT_HEADER, true);
-        // $header = curl_exec($curl);
-        // $info = curl_getinfo($curl);
-        // curl_close($curl);
-
-        // file_put_contents($name, $header);
-        // dd($header);
-
-
-        // // Storage::put($name, $tempImage);
-        // // $filedata = file_get_contents($url);
-
-        // // Storage::put($name, $output);
-
-        // // // $zipper->make('https://data.gov.il/dataset/sheetkshape/resource/e4beff76-0913-464f-8e6c-4162e5fec9a3/download/sheet_k.zip')->extractTo('foo');
-        // // $zipper->close();
-        // // return response()->download($url,'Download.zip');
-    }
 }
