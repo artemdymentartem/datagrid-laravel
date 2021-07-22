@@ -11,7 +11,7 @@ class PersonController extends Controller
 {
     public function index()
     {
-        $fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18", "google", "facebook"];
+        $fields = ["_id", "num1", "num2", "num3", "num4", "date1", "date2", "date3", "date4", "date5", "date6", "date7", "date8", "date9", "date10", "name1", "name2", "name3", "name4", "status", "reason", "amount", "balance", "boolean", "there", "settlement", "language", "type", "district", "decision", "phone", "email", "description", "group", "classificaiton", "volume", "contractor", "note"];
         $tab_name = "אדם";
         $table_name = "Main Datatable";
         $tab_en = "person";
@@ -237,9 +237,10 @@ class PersonController extends Controller
 
     public function getMainDatasets(Request $request)
     {
-        $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18","google","facebook"];
+        $table_fields = ["_id", "num1", "num2", "num3", "num4", "date1", "date2", "date3", "date4", "date5", "date6", "date7", "date8", "date9", "date10", "name1", "name2", "name3", "name4", "status", "reason", "amount", "balance", "boolean", "there", "settlement", "language", "type", "district", "decision", "phone", "email", "description", "group", "classificaiton", "volume", "contractor", "note"];
         
         $db_tables = ["person_pr2018", "person_notary", "person_yerusha", "person_pinkashakablanim", "person_cpalist"];
+        $count_arr = [0, 0, 0, 0, 0];
         $db_table = "person_pr2018";
         $draw = $request->get('draw');
         $start = $request->get("start");
@@ -258,39 +259,94 @@ class PersonController extends Controller
         
         // foreach ($db_tables as $key => $db_table) {
             if (Schema::hasTable($db_table)) {
-                $fields = Schema::getColumnListing($db_table);
+                $fields = [];
+                switch ($db_table) {
+                    case 'person_pr2018':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1"=> "מספר רץ תיקים",
+                            "name1"=> "עיר בה מתגורר החייב",
+                            "name2"=> "שם בית משפט",
+                            "status"=> "סטטוס תיק",
+                            "date1"=> "תאריך פתיחת תיק",
+                            "date2"=> "תאריך צו כינוס",
+                            "date3"=> "תאריך צו פשיטת רגל",
+                            "date4"=> "תאריך ביטול צו",
+                            "reason"=> "סיבת ביטול צו",
+                            "date5"=> "תאריך גזירת תיק",
+                            "amount"=> "סכום הצו",
+                            "balance"=> "יתרה בבנק",
+                            "boolean"=> "האם בצו הכינוס נכלל סעיף 42",
+                            "date6"=> "תאריך הגשת דוח על ידי מנהל מיוחד",
+                            "date7"=> "תאריך הגשה של תכנית פרעון",
+                            "date8"=> "תאריך מתוכנן להגשת דוח",
+                            "date9"=> "תאריך מתוכנן להגשת תכנית פרעון",
+                            "date10"=> "תאריך אישור דוח מסכם"
+                        ];
+                        break;
+                    case 'person_notary':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1"=> "מספר רץ תיקים",
+                            "name1"=> "עיר בה מתגורר החייב",
+                            "name2"=> "שם בית משפט",
+                            "status"=> "סטטוס תיק",
+                            "date1"=> "תאריך פתיחת תיק",
+                            "date2"=> "תאריך צו כינוס",
+                            "date3"=> "תאריך צו פשיטת רגל",
+                            "date4"=> "תאריך ביטול צו",
+                            "reason"=> "סיבת ביטול צו",
+                            "date5"=> "תאריך גזירת תיק",
+                            "amount"=> "סכום הצו",
+                            "balance"=> "יתרה בבנק",
+                            "boolean"=> "האם בצו הכינוס נכלל סעיף 42",
+                            "date6"=> "תאריך הגשת דוח על ידי מנהל מיוחד",
+                            "date7"=> "תאריך הגשה של תכנית פרעון",
+                            "date8"=> "תאריך מתוכנן להגשת דוח",
+                            "date9"=> "תאריך מתוכנן להגשת תכנית פרעון",
+                            "date10"=> "תאריך אישור דוח מסכם"
+                        ];
+                        break;
+                    
+                    default:
+                        # code...
+                        break;
+                }
                 
                 // Total records
                 $totalRecords = DB::table($db_table)->select('count(*) as allcount')->count();
+
                 $totalRecordswithFilter = DB::table($db_table)
                     ->select('count(*) as allcount')
                     ->where(function ($query) use($searchValue, $fields) {
-                        for ($i = 0; $i < count($fields); $i++){
-                        $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                        foreach ($fields as $key => $field) {
+                            $query->orwhere($field, 'like',  '%' . $searchValue .'%');
                         }      
                     })
-                    ->where(function ($query) use($fields, $columnName_arr) {
-                        for ($i = 0; $i < count($fields); $i++){
+                    ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                        foreach ($fields as $key => $field) {
+                            $i = array_search($key, $table_fields);
                             if ($columnName_arr[$i]['search']['value'] != "") {
-                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
                             }
-                        }  
+                        } 
                     })
                     ->count();
     
                 // Fetch records
                 $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
                     ->where(function ($query) use($searchValue, $fields) {
-                        for ($i = 0; $i < count($fields); $i++){
-                            $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                        foreach ($fields as $key => $field) {
+                            $query->orwhere($field, 'like',  '%' . $searchValue .'%');
                         }      
                     })
-                    ->where(function ($query) use($fields, $columnName_arr) {
-                        for ($i = 0; $i < count($fields); $i++){
+                    ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                        foreach ($fields as $key => $field) {
+                            $i = array_search($key, $table_fields);
                             if ($columnName_arr[$i]['search']['value'] != "") {
-                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
                             }
-                        }  
+                        } 
                     })
                     ->select('*')
                     ->skip($start)
@@ -300,10 +356,10 @@ class PersonController extends Controller
                 $sno = $start+1;
                 $data = array();
                 foreach ($records as $key => $record) {
-                    $table_values = ["", "","","","","","","","","","","","","","","","","","","",""];
-                    for ($i = 0; $i < count($fields); $i++){
-                        $index = $fields[$i];
-                        $table_values[$i] = $record->$index;
+                    $table_values = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+                    foreach ($fields as $key => $field) {
+                        $i = array_search($key, $table_fields);
+                        $table_values[$i] = $record->$field;
                     }
                     $data[] = array_combine($table_fields, $table_values);
                 }
