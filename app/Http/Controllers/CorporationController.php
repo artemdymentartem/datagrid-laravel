@@ -11,7 +11,7 @@ class CorporationController extends Controller
 {
     public function index()
     {
-        $fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18","field19","field20","field21","field22","field23","field24","field25","field26","field27"];
+        $fields = ["_id", "num1", "num2", "num3", "num4", "num5", "date1", "date2", "date3", "date4", "name1", "name2", "name3", "name4", "address1", "address2", "address3", "address4", "address5", "address6", "address7", "address8", "address9", "address10", "activity1", "activity2", "activity3", "activity4", "status1", "status2", "report1", "report2", "report3", "report4", "goal1", "goal2", "occupation", "office", "type", "description", "purpose", "boolean", "limit", "fertilizer", "postal code", "T-D-", "country", "at", "settlement", "turnover", "association", "liquidation", "reason", "district", "phone", "email", "group", "classification", "contractor", "note"];
         $tab_name = "תאגיד";
         $table_name = "Main Datatable";
         $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
@@ -298,10 +298,11 @@ class CorporationController extends Controller
 
     public function getMainDatasets(Request $request)
     {
-        $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18","field19","field20","field21","field22","field23","field24","field25","field26","field27"];
+        $table_fields = ["_id", "num1", "num2", "num3", "num4", "num5", "date1", "date2", "date3", "date4", "name1", "name2", "name3", "name4", "address1", "address2", "address3", "address4", "address5", "address6", "address7", "address8", "address9", "address10", "activity1", "activity2", "activity3", "activity4", "status1", "status2", "report1", "report2", "report3", "report4", "goal1", "goal2", "occupation", "office", "type", "description", "purpose", "boolean", "limit", "fertilizer", "postal code", "T-D-", "country", "at", "settlement", "turnover", "association", "liquidation", "reason", "district", "phone", "email", "group", "classification", "contractor", "note"];
         
         $db_tables = ["corporation_gsa", "corporation_ica_companies", "corporation_ica_partnerships", "corporation_membership-in-liquidation", "corporation_moj-amutot1", "corporation_moj-amutot2", "corporation_pr2018", "corporation_pinkashakablanim", "corporation_ica-changes", "corporation_limit"];
-        $db_table = "corporation_gsa";
+        $count_arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $filter_arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         $draw = $request->get('draw');
         $start = $request->get("start");
         $rowperpage = $request->get("length"); // Rows display per page
@@ -313,80 +314,325 @@ class CorporationController extends Controller
 
         $columnIndex = $columnIndex_arr[0]['column']; // Column index
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
+
+        $temp_start = $start;
+        $temp_rowperpage = $rowperpage;
+        $data = array();
+
+        $record_flag = false;
         
-        // foreach ($db_tables as $key => $db_table) {
+        foreach ($db_tables as $key => $db_table) {
             if (Schema::hasTable($db_table)) {
-                $fields = Schema::getColumnListing($db_table);
+                $fields = [];
+                switch ($db_table) {
+                    case 'corporation_gsa':
+                        $fields = [
+                            "_id" => "_id",
+                            "name1" => "COMPANY_NAME",
+                            "name2" => "COMPANY_SITE",
+                            "occupation" => "PRIMARY_OCCUPATION",
+                            "status1" => "STATUS",
+                            "office" => "GOVERMENT_OFFICE"
+                        ];
+                        break;
+
+                    case 'corporation_ica_companies':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1" => "מספר חברה",
+                            "name1" => "שם חברה",
+                            "name2" => "שם באנגלית",
+                            "type" => "סוג תאגיד",
+                            "status1" => "סטטוס חברה",
+                            "description" => "תאור חברה",
+                            "purpose" => "מטרת החברה",
+                            "date1" => "תאריך התאגדות",
+                            "boolean" => "חברה ממשלתית",
+                            "limit" => "מגבלות",
+                            "fertilizer" => "מפרה",
+                            "num2" => "שנה אחרונה של דוח שנתי (שהוגש)",
+                            "name3" => "שם עיר",
+                            "name4" => "שם רחוב",
+                            "num3" => "מספר בית",
+                            "postal code" => "מיקוד",
+                            "T-D-" => "ת-ד-",
+                            "country" => "מדינה",
+                            "at" => "אצל",
+                            "status2" => "תת סטטוס",
+                        ];
+                        break;
+
+                    case 'corporation_ica_partnerships':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1" => "מספר שותפות",
+                            "name1" => "שם שותפות",
+                            "name2" => "שם באנגלית",
+                            "type" => "סוג תאגיד",
+                            "status1" => "סטטוס תאגיד",
+                            "date1" => "תאריך התאגדות",
+                            "settlement" => "ישוב",
+                            "name3" => "רחוב",
+                            "num2" => "מספר בית",
+                            "postal code" => "מיקוד",
+                            "T-D-" => "ת-ד",
+                            "country" => "מדינה",
+                            "at" => "אצל",
+                        ];
+                        break;
+                        
+                    case 'corporation_membership-in-liquidation':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1" => "מספר חברה",
+                            "name1" => "שם חברה",
+                            "name2" => "שם באנגלית",
+                            "type" => "סוג תאגיד",
+                            "status1" => "סטטוס חברה",
+                            "date1" => "אישור בקשת הפירוק",
+                            "date2" => "מועד החיסול הצפוי",
+                            "status2" => "תת סטטוס",
+                            "fertilizer" => "מפרה",
+                            "name3" => "שם עיר",
+                            "name3" => "שם רחוב",
+                            "num2" => "מספר בית",
+                            "postal code" => "מיקוד",
+                            "T-D-" => "ת-ד-",
+                            "country" => "מדינה",
+                            "at" => "אצל",
+                        ];
+                        break;
+
+                    case 'corporation_moj-amutot1':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1" => "מספר עמותה",
+                            "date1" => "תאריך רישום עמותה",
+                            "name1" => "שם עמותה בעברית",
+                            "name2" => "שם עמותה באנגלית",
+                            "status1" => "סטטוס עמותה",
+                            "activity1" => "סיווג פעילות ענפי",
+                            "activity2" => "תחום פעילות משני",
+                            "report1" => "שנת דיווח דוח כספי אחרון",
+                            "turnover" => "מחזור כספי",
+                            "num2" => "כמות מתנדבים",
+                            "num3" => "כמות עובדים",
+                            "activity3" => "איזורי פעילות",
+                            "activity4" => "מקומות פעילות",
+                            "date2" => "תאריך עדכון אחרון של נתוני עמותה",
+                            "name3" => "שם אגודה עותומנית",
+                            "address1" => "כתובת - ישוב",
+                            "address2" => "כתובת - רחוב",
+                            "address3" => "כתובת - מספר דירה",
+                            "address4" => "כתובת - מיקוד",
+                            "address5" => "מען - ישוב",
+                            "address6" => "מען - רחוב",
+                            "address7" => "מען - מספר דירה",
+                            "address8" => "מען - מיקוד",
+                            "address9" => "מען - מיקוד תיבת דואר",
+                            "address10" => "מען - תיבת דואר",
+                            "date3" => "תאריך התחלה תוקף מטרות עמותה",
+                            "association" => "מטרות עמותה"
+                        ];
+                        break;
+
+                    case 'corporation_moj-amutot2':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1" => "מספר חל~צ",
+                            "date1" => "תאריך רישום חל~צ",
+                            "name1" => "שם חל~צ בעברית",
+                            "name2" => "שם חל~צ באנגלית",
+                            "status1" => "סטטוס חל~צ",
+                            "goal1" => "מטרות ארגון רשמיות",
+                            "activity1" => "סיווג פעילות ענפי",
+                            "activity2" => "תחום פעילות",
+                            "report1" => "שנת דיווח דוח כספי אחרון",
+                            "report2" => "מחזור - נתונים מדוח מילולי מקוון",
+                            "report3" => "מתנדבים- נתונים מדוח מילולי מקוון",
+                            "report4" => "עובדים- נתונים מדוח מילולי מקוון",
+                            "activity3" => "איזורי פעילות",
+                            "date2" => "תאריך עדכון אחרון של נתוני חל~צ",
+                            "address1" => "כתובת - ישוב",
+                            "address2" => "כתובת - רחוב",
+                            "address3" => "כתובת - מספר דירה",
+                            "address4" => "כתובת - מיקוד",
+                            "address5" => "מען - ישוב",
+                            "address6" => "מען - רחוב",
+                            "address7" => "מען - מספר דירה",
+                            "address8" => "מען - מיקוד",
+                            "address9" => "מען - מיקוד תיבת דואר",
+                            "address10" => "מען - תיבת דואר",
+                            "goal2" => "תאריך התחלה תוקף מטרות עמותה",
+                            "date3" => "תאריך ביקורת עומק אחרונה",
+                        ];
+                        break;
+
+                    case 'corporation_pr2018':
+                        $fields = [
+                            "_id" => "_id",
+                            "liquidation" => "מזהה תיק פירוק חברה",
+                            "activity1" => "עיר פעילות חברה",
+                            "status1" => "סטטוס תיק",
+                            "date1" => "תאריך הגשת הבקשה",
+                            "date2" => "תאריך קבלת צו פירוק",
+                            "date3" => "תאריך ביטול / הקפאת צו פירוק",
+                            "date4" => "תאריך סגירת תיק",
+                            "reason" => "סיבת סגירה",
+                            "district" => "בית משפט מחוזי בו מתנהל התיק",
+                            "name1" => "שם החברה",
+                            "num1" => "מספר זיהוי של החברה",
+                        ];
+                        break;
+
+                    case 'corporation_pinkashakablanim':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1" => "מספר יישות",
+                            "name1" => "שם יישות",
+                            "num2" => "מספר קבלן",
+                            "name2" => "שם יישוב",
+                            "name3" => "שם רחוב",
+                            "num3" => "מספר בית",
+                            "date1" => "תאריך רישום",
+                            "phone" => "מספר טלפון",
+                            "email" => "דואר אלקטרוני",
+                            "num4" => "מספר ענף",
+                            "description" => "תיאור ענף",
+                            "group" => "קבוצה",
+                            "classification" => "סיווג",
+                            "date2" => "סיווג מתאריך",
+                            "num5" => "היקף מקסימאלי באלפי שח",
+                            "contractor" => "קבלן מוכר",
+                            "name4" => "עובדים בענף",
+                            "note" => "הערה",
+                        ];
+                        break;
+
+                    case 'corporation_ica-changes':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1" => "מספר תאגיד",
+                            "name1" => "שם תאגיד",
+                            "type" => "סוג בקשה",
+                            "date1" => "תאריך עדכון סטטוס",
+                        ];
+                        break;
+
+                    case 'corporation_limit':
+                        $fields = [
+                            "_id" => "_id",
+                            "num1" => "מספר תאגיד",
+                            "name1" => "שם תאגיד",
+                            "type" => "סוג בקשה",
+                            "date1" => "תאריך עדכון סטטוס",
+                        ];
+                        break;
+
+                    default:
+                        
+                        break;
+                }
                 
                 // Total records
-                $totalRecords = DB::table($db_table)->select('count(*) as allcount')->count();
-                $totalRecordswithFilter = DB::table($db_table)
+                $count_arr[$key] = DB::table($db_table)->select('count(*) as allcount')->count();
+
+                $filter_arr[$key] = DB::table($db_table)
                     ->select('count(*) as allcount')
                     ->where(function ($query) use($searchValue, $fields) {
-                        for ($i = 0; $i < count($fields); $i++){
-                        $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                        foreach ($fields as $key => $field) {
+                            $query->orwhere($field, 'like',  '%' . $searchValue .'%');
                         }      
                     })
-                    ->where(function ($query) use($fields, $columnName_arr) {
-                        for ($i = 0; $i < count($fields); $i++){
+                    ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                        foreach ($fields as $key => $field) {
+                            $i = array_search($key, $table_fields);
                             if ($columnName_arr[$i]['search']['value'] != "") {
-                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
                             }
-                        }  
+                        } 
                     })
                     ->count();
-    
-                // Fetch records
-                $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
-                    ->where(function ($query) use($searchValue, $fields) {
-                        for ($i = 0; $i < count($fields); $i++){
-                            $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
-                        }      
-                    })
-                    ->where(function ($query) use($fields, $columnName_arr) {
-                        for ($i = 0; $i < count($fields); $i++){
-                            if ($columnName_arr[$i]['search']['value'] != "") {
-                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                
+                $temp_start = $temp_start - $count_arr[$key];
+                if ($temp_start < 0 && !$record_flag) {
+                    if ($temp_start + $temp_rowperpage <= 0) {
+                        // Fetch records
+                        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                        ->where(function ($query) use($searchValue, $fields) {
+                            foreach ($fields as $key => $field) {
+                                $query->orwhere($field, 'like',  '%' . $searchValue .'%');
+                            }      
+                        })
+                        ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                if ($columnName_arr[$i]['search']['value'] != "") {
+                                    $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                }
+                            } 
+                        })
+                        ->select('*')
+                        ->skip($temp_start + $count_arr[$key])
+                        ->take($temp_rowperpage)
+                        ->get();
+
+                        foreach ($records as $key => $record) {
+                            $table_values = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                $table_values[$i] = $record->$field;
                             }
-                        }  
-                    })
-                    ->select('*')
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->get();
-    
-                $sno = $start+1;
-                $data = array();
-                foreach ($records as $key => $record) {
-                    $table_values = ["", "","","","","","","","","","","","","","","","","","","","","","","","","","",""];
-                    for ($i = 0; $i < count($fields); $i++){
-                        $index = $fields[$i];
-                        $table_values[$i] = $record->$index;
+                            $data[] = array_combine($table_fields, $table_values);
+                        }
+
+                        $record_flag = true;
                     }
-                    $data[] = array_combine($table_fields, $table_values);
+                    else {
+                        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                        ->where(function ($query) use($searchValue, $fields) {
+                            foreach ($fields as $key => $field) {
+                                $query->orwhere($field, 'like',  '%' . $searchValue .'%');
+                            }      
+                        })
+                        ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                if ($columnName_arr[$i]['search']['value'] != "") {
+                                    $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                }
+                            } 
+                        })
+                        ->select('*')
+                        ->skip($temp_start + $count_arr[$key])
+                        ->take($temp_rowperpage)
+                        ->get();
+
+                        foreach ($records as $key => $record) {
+                            $table_values = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                $table_values[$i] = $record->$field;
+                            }
+                            $data[] = array_combine($table_fields, $table_values);
+                        }
+                    }
                 }
-    
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => $totalRecords,
-                    "iTotalDisplayRecords" => $totalRecordswithFilter,
-                    "aaData" => $data
-                ); 
-    
-                echo json_encode($response);
             }
-            else {
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => 0,
-                    "iTotalDisplayRecords" => 0,
-                    "aaData" => []
-                ); 
-                echo json_encode($response);
-            }
-        // }
+        }
+
+        
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => array_sum($count_arr),
+            "iTotalDisplayRecords" => array_sum($filter_arr),
+            "aaData" => $data
+        ); 
+        echo json_encode($response);
         
         exit;
     }
