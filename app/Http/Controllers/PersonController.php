@@ -377,7 +377,7 @@ class PersonController extends Controller
                 
                 $temp_start = $temp_start - $count_arr[$key];
                 if ($temp_start < 0 && !$record_flag) {
-                    if ($temp_start + $temp_rowperpage < 0) {
+                    if ($temp_start + $temp_rowperpage <= 0) {
                         // Fetch records
                         $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
                         ->where(function ($query) use($searchValue, $fields) {
@@ -410,7 +410,7 @@ class PersonController extends Controller
                         $record_flag = true;
                     }
                     else {
-                        $records += DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
                         ->where(function ($query) use($searchValue, $fields) {
                             foreach ($fields as $key => $field) {
                                 $query->orwhere($field, 'like',  '%' . $searchValue .'%');
@@ -426,6 +426,7 @@ class PersonController extends Controller
                         })
                         ->select('*')
                         ->skip($temp_start + $count_arr[$key])
+                        ->take($temp_rowperpage)
                         ->get();
 
                         foreach ($records as $key => $record) {
@@ -436,8 +437,6 @@ class PersonController extends Controller
                             }
                             $data[] = array_combine($table_fields, $table_values);
                         }
-
-                        $temp_rowperpage = $temp_rowperpage - count($records);
                     }
                 }
             }
