@@ -13,7 +13,7 @@ class AddressController extends Controller
 {
     public function index()
     {
-        $fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18","field19","field20","field21","field22","field23"];
+        $fields = ["_id", "building1", "building2", "building3", "building4", "building5", "building6", "building7", "building8", "building9", "building10", "building11", "code1", "code2", "code3", "code4", "name1", "name2", "name3", "tax1", "tax2", "sign1", "sign2", "block", "smooth", "subdivision", "description", "type", "district", "site", "court", "area", "date", "year", "table", "location", "status" ];
         $tab_name = "גושים וחלקות  וכתובת";
         $table_name = "Main Datatable";
         $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
@@ -250,10 +250,11 @@ class AddressController extends Controller
 
     public function getMainDatasets(Request $request)
     {
-        $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8","field9","field10","field11","field12","field13","field14","field15","field16","field17","field18","field19","field20","field21","field22","field23"];
+        $table_fields = ["_id", "building1", "building2", "building3", "building4", "building5", "building6", "building7", "building8", "building9", "building10", "building11", "code1", "code2", "code3", "code4", "name1", "name2", "name3", "tax1", "tax2", "sign1", "sign2", "block", "smooth", "subdivision", "description", "type", "district", "site", "court", "area", "date", "year", "table", "location", "status" ];
         
-        $db_tables = ["address_tabu_asset","address_hitkadmuthabnia","address_321","address_israel-streets-synom"];
-        $db_table = "address_tabu_asset";
+        $db_tables = ["address_tabu_asset", "address_hitkadmuthabnia", "address_321", "address_israel-streets-synom"];
+        $count_arr = [0, 0, 0, 0];
+        $filter_arr = [0, 0, 0, 0];
         $draw = $request->get('draw');
         $start = $request->get("start");
         $rowperpage = $request->get("length"); // Rows display per page
@@ -265,80 +266,183 @@ class AddressController extends Controller
 
         $columnIndex = $columnIndex_arr[0]['column']; // Column index
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
+
+        $temp_start = $start;
+        $temp_rowperpage = $rowperpage;
+        $data = array();
+
+        $record_flag = false;
         
-        // foreach ($db_tables as $key => $db_table) {
+        foreach ($db_tables as $key => $db_table) {
             if (Schema::hasTable($db_table)) {
-                $fields = Schema::getColumnListing($db_table);
+                $fields = [];
+                switch ($db_table) {
+                    case 'address_tabu_asset':
+                        $fields = [
+                            "_id" => "_id",
+                            "block" => "גוש",
+                            "smooth" => "חלקה",
+                            "subdivision" => "תת חלקה",
+                            "description" => "תיאור שיטה",
+                            "type" => "סוג בעלות",
+                        ];
+                        break;
+                    case 'address_hitkadmuthabnia':
+                        $fields = [
+                            "_id" => "_id",
+                            "district" => "מחוז",
+                            "tax1" => "ישוב למס",
+                            "site" => "אתר",
+                            "tax2" => "מס- מתחם",
+                            "name1" => "שם מתחם",
+                            "court" => "מגרש",
+                            "block" => "גוש",
+                            "smooth" => "חלקה",
+                            "building1" => "מספר בניין",
+                            "building2" => "קומות בניין",
+                            "building3" => "יחידות דיור בניין",
+                            "area" => "שטח",
+                            "description" => "תאור שיטת שיווק",
+                            "date" => "תאריך קובע",
+                            "year" => "שנת חוזה",
+                            "building4" => "שלב 5 בניין",
+                            "building5" => "שלב 7 בניין",
+                            "building6" => "שלב 8 בניין",
+                            "building7" => "שלב 16 בניין",
+                            "building8" => "שלב 18 בניין",
+                            "building9" => "שלב 29 בניין",
+                            "building10" => "שלב 39 בניין",
+                            "building11" => "שלב 42 בניין",
+                        ];
+                        break;
+                    case 'address_321':
+                        $fields = [
+                            "_id" => "_id",
+                            "table" => "טבלה",
+                            "city" => "סמל_ישוב",
+                            "location" => "שם_ישוב",
+                            "street" => "סמל_רחוב",
+                            "name1" => "שם_רחוב",
+                        ];
+                        break;
+                    case 'address_israel-streets-synom':
+                        $fields = [
+                            "_id" => "_id",
+                            "code1" => "region_code",
+                            "name1" => "region_name",
+                            "code2" => "city_code",
+                            "name2" => "city_name",
+                            "code3" => "street_code",
+                            "name3" => "street_name",
+                            "status" => "street_name_status",
+                            "code4" => "official_code",
+                        ];
+                        break;
+                    
+                    default:
+                        
+                        break;
+                }
                 
                 // Total records
-                $totalRecords = DB::table($db_table)->select('count(*) as allcount')->count();
-                $totalRecordswithFilter = DB::table($db_table)
+                $count_arr[$key] = DB::table($db_table)->select('count(*) as allcount')->count();
+
+                $filter_arr[$key] = DB::table($db_table)
                     ->select('count(*) as allcount')
                     ->where(function ($query) use($searchValue, $fields) {
-                        for ($i = 0; $i < count($fields); $i++){
-                        $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                        foreach ($fields as $key => $field) {
+                            $query->orwhere($field, 'like',  '%' . $searchValue .'%');
                         }      
                     })
-                    ->where(function ($query) use($fields, $columnName_arr) {
-                        for ($i = 0; $i < count($fields); $i++){
+                    ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                        foreach ($fields as $key => $field) {
+                            $i = array_search($key, $table_fields);
                             if ($columnName_arr[$i]['search']['value'] != "") {
-                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
                             }
-                        }  
+                        } 
                     })
                     ->count();
-    
-                // Fetch records
-                $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
-                    ->where(function ($query) use($searchValue, $fields) {
-                        for ($i = 0; $i < count($fields); $i++){
-                            $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
-                        }      
-                    })
-                    ->where(function ($query) use($fields, $columnName_arr) {
-                        for ($i = 0; $i < count($fields); $i++){
-                            if ($columnName_arr[$i]['search']['value'] != "") {
-                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                
+                $temp_start = $temp_start - $count_arr[$key];
+                if ($temp_start < 0 && !$record_flag) {
+                    if ($temp_start + $temp_rowperpage <= 0) {
+                        // Fetch records
+                        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                        ->where(function ($query) use($searchValue, $fields) {
+                            foreach ($fields as $key => $field) {
+                                $query->orwhere($field, 'like',  '%' . $searchValue .'%');
+                            }      
+                        })
+                        ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                if ($columnName_arr[$i]['search']['value'] != "") {
+                                    $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                }
+                            } 
+                        })
+                        ->select('*')
+                        ->skip($temp_start + $count_arr[$key])
+                        ->take($temp_rowperpage)
+                        ->get();
+
+                        foreach ($records as $key => $record) {
+                            $table_values = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ];
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                $table_values[$i] = $record->$field;
                             }
-                        }  
-                    })
-                    ->select('*')
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->get();
-    
-                $sno = $start+1;
-                $data = array();
-                foreach ($records as $key => $record) {
-                    $table_values = ["", "","","","","","","","","","","","","","","","","","","","","","",""];
-                    for ($i = 0; $i < count($fields); $i++){
-                        $index = $fields[$i];
-                        $table_values[$i] = $record->$index;
+                            $data[] = array_combine($table_fields, $table_values);
+                        }
+
+                        $record_flag = true;
                     }
-                    $data[] = array_combine($table_fields, $table_values);
+                    else {
+                        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                        ->where(function ($query) use($searchValue, $fields) {
+                            foreach ($fields as $key => $field) {
+                                $query->orwhere($field, 'like',  '%' . $searchValue .'%');
+                            }      
+                        })
+                        ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                if ($columnName_arr[$i]['search']['value'] != "") {
+                                    $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                }
+                            } 
+                        })
+                        ->select('*')
+                        ->skip($temp_start + $count_arr[$key])
+                        ->take($temp_rowperpage)
+                        ->get();
+
+                        foreach ($records as $key => $record) {
+                            $table_values = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ];
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                $table_values[$i] = $record->$field;
+                            }
+                            $data[] = array_combine($table_fields, $table_values);
+                        }
+                    }
                 }
-    
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => $totalRecords,
-                    "iTotalDisplayRecords" => $totalRecordswithFilter,
-                    "aaData" => $data
-                ); 
-    
-                echo json_encode($response);
             }
-            else {
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => 0,
-                    "iTotalDisplayRecords" => 0,
-                    "aaData" => []
-                ); 
-                echo json_encode($response);
-            }
-        // }
+        }
+
+        
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => array_sum($count_arr),
+            "iTotalDisplayRecords" => array_sum($filter_arr),
+            "aaData" => $data
+        ); 
+        echo json_encode($response);
         
         exit;
     }

@@ -11,7 +11,7 @@ class AbandonController extends Controller
 {
     public function index()
     {
-        $fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8"];
+        $fields = ["_id", "number", "date", "deposit", "amount", "deposit date", "currency", "Country", "country"];
         $tab_name = "גושים וחלקות  וכתובת";
         $table_name = "Main Datatable";
         $link = "https://data.gov.il/dataset/pr2018/resource/2156937e-524a-4511-907d-5470a6a5264f";
@@ -208,10 +208,11 @@ class AbandonController extends Controller
 
     public function getMainDatasets(Request $request)
     {
-        $table_fields = ["_id", "field1","field2","field3","field4","field5","field6","field7","field8"];
+        $table_fields = ["_id", "number", "date", "deposit", "amount", "deposit date", "currency", "Country", "country"];
         
         $db_tables = ["abandon_ezvonot2018"];
-        $db_table = "abandon_ezvonot2018";
+        $count_arr = [0];
+        $filter_arr = [0];
         $draw = $request->get('draw');
         $start = $request->get("start");
         $rowperpage = $request->get("length"); // Rows display per page
@@ -223,80 +224,135 @@ class AbandonController extends Controller
 
         $columnIndex = $columnIndex_arr[0]['column']; // Column index
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
+
+        $temp_start = $start;
+        $temp_rowperpage = $rowperpage;
+        $data = array();
+
+        $record_flag = false;
         
-        // foreach ($db_tables as $key => $db_table) {
+        foreach ($db_tables as $key => $db_table) {
             if (Schema::hasTable($db_table)) {
-                $fields = Schema::getColumnListing($db_table);
+                $fields = [];
+                switch ($db_table) {
+                    case 'abandon_ezvonot2018':
+                        $fields = [
+                            "_id" => "_id",
+                            "number" => "מספר הפקדה",
+                            "date" => "תאריך קבלה",
+                            "deposit" => "מטבע מקור של ההפקדה",
+                            "amount" => "סכום לאחר המרה לשקלים",
+                            "deposit date" => "תאריך הפקדה",
+                            "currency" => "סוג מטבע מקור",
+                            "Country" => "מדינה",
+                            "country" => "ארץ",
+                        ];
+                        break;
+                    
+                    default:
+                        
+                        break;
+                }
                 
                 // Total records
-                $totalRecords = DB::table($db_table)->select('count(*) as allcount')->count();
-                $totalRecordswithFilter = DB::table($db_table)
+                $count_arr[$key] = DB::table($db_table)->select('count(*) as allcount')->count();
+
+                $filter_arr[$key] = DB::table($db_table)
                     ->select('count(*) as allcount')
                     ->where(function ($query) use($searchValue, $fields) {
-                        for ($i = 0; $i < count($fields); $i++){
-                        $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
+                        foreach ($fields as $key => $field) {
+                            $query->orwhere($field, 'like',  '%' . $searchValue .'%');
                         }      
                     })
-                    ->where(function ($query) use($fields, $columnName_arr) {
-                        for ($i = 0; $i < count($fields); $i++){
+                    ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                        foreach ($fields as $key => $field) {
+                            $i = array_search($key, $table_fields);
                             if ($columnName_arr[$i]['search']['value'] != "") {
-                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
                             }
-                        }  
+                        } 
                     })
                     ->count();
-    
-                // Fetch records
-                $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
-                    ->where(function ($query) use($searchValue, $fields) {
-                        for ($i = 0; $i < count($fields); $i++){
-                            $query->orwhere($fields[$i], 'like',  '%' . $searchValue .'%');
-                        }      
-                    })
-                    ->where(function ($query) use($fields, $columnName_arr) {
-                        for ($i = 0; $i < count($fields); $i++){
-                            if ($columnName_arr[$i]['search']['value'] != "") {
-                                $query->where($fields[$i], 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                
+                $temp_start = $temp_start - $count_arr[$key];
+                if ($temp_start < 0 && !$record_flag) {
+                    if ($temp_start + $temp_rowperpage <= 0) {
+                        // Fetch records
+                        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                        ->where(function ($query) use($searchValue, $fields) {
+                            foreach ($fields as $key => $field) {
+                                $query->orwhere($field, 'like',  '%' . $searchValue .'%');
+                            }      
+                        })
+                        ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                if ($columnName_arr[$i]['search']['value'] != "") {
+                                    $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                }
+                            } 
+                        })
+                        ->select('*')
+                        ->skip($temp_start + $count_arr[$key])
+                        ->take($temp_rowperpage)
+                        ->get();
+
+                        foreach ($records as $key => $record) {
+                            $table_values = ["", "", "", "", "", "", "", "", ""];
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                $table_values[$i] = $record->$field;
                             }
-                        }  
-                    })
-                    ->select('*')
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->get();
-    
-                $sno = $start+1;
-                $data = array();
-                foreach ($records as $key => $record) {
-                    $table_values = ["","","","","","","",""];
-                    for ($i = 0; $i < count($fields); $i++){
-                        $index = $fields[$i];
-                        $table_values[$i] = $record->$index;
+                            $data[] = array_combine($table_fields, $table_values);
+                        }
+
+                        $record_flag = true;
                     }
-                    $data[] = array_combine($table_fields, $table_values);
+                    else {
+                        $records = DB::table($db_table)->orderBy($columnName,$columnSortOrder)
+                        ->where(function ($query) use($searchValue, $fields) {
+                            foreach ($fields as $key => $field) {
+                                $query->orwhere($field, 'like',  '%' . $searchValue .'%');
+                            }      
+                        })
+                        ->where(function ($query) use($fields, $columnName_arr, $table_fields) {
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                if ($columnName_arr[$i]['search']['value'] != "") {
+                                    $query->where($field, 'like',  '%' . $columnName_arr[$i]['search']['value'] .'%');
+                                }
+                            } 
+                        })
+                        ->select('*')
+                        ->skip($temp_start + $count_arr[$key])
+                        ->take($temp_rowperpage)
+                        ->get();
+
+                        foreach ($records as $key => $record) {
+                            $table_values = ["", "", "", "", "", "", "", "", ""];
+                            foreach ($fields as $key => $field) {
+                                $i = array_search($key, $table_fields);
+                                $table_values[$i] = $record->$field;
+                            }
+                            $data[] = array_combine($table_fields, $table_values);
+                        }
+                    }
                 }
-    
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => $totalRecords,
-                    "iTotalDisplayRecords" => $totalRecordswithFilter,
-                    "aaData" => $data
-                ); 
-    
-                echo json_encode($response);
             }
-            else {
-                $response = array(
-                    "draw" => intval($draw),
-                    "iTotalRecords" => 0,
-                    "iTotalDisplayRecords" => 0,
-                    "aaData" => []
-                ); 
-                echo json_encode($response);
-            }
-        // }
+        }
+
+        
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => array_sum($count_arr),
+            "iTotalDisplayRecords" => array_sum($filter_arr),
+            "aaData" => $data
+        ); 
+        echo json_encode($response);
         
         exit;
     }
