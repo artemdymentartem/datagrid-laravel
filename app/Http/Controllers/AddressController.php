@@ -446,4 +446,91 @@ class AddressController extends Controller
         
         exit;
     }
+
+    
+    public function csvUpload(Request $request, $datasets)
+    {
+        $db_table = "address_" . $datasets;
+        Schema::dropIfExists($db_table);
+
+        $file = $request->file('csv');
+
+        $filename = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $tempPath = $file->getRealPath();
+        $fileSize = $file->getSize();
+        $mimeType = $file->getMimeType();
+
+        // Valid File Extensions
+        $valid_extension = array("csv");
+
+        // 200MB in Bytes
+        $maxFileSize = 209715200; 
+
+        // Check file extension
+        if(in_array(strtolower($extension),$valid_extension)){
+            if ($request->has('header')) {
+                $data = Excel::load($tempPath, function($reader) {})->get()->toArray();
+            } else {
+                $data = array_map('str_getcsv', file($tempPath));
+            }
+        }
+
+        if (count($data) > 0) {
+            $fields = $data[0];
+            $keyArr = array();
+            if (!Schema::hasTable($db_table)) {
+                Schema::create($db_table, function($table) use($fields)
+                {
+                    global $keyArr;
+                    $keyArr[] = "_id";
+                    $GLOBALS['exchange_list'] = array();
+                    $GLOBALS['changed_list'] = array();
+                    $table->integer("_id")->nullable();
+                    foreach ($fields as $key => $field) {
+                        $mystring = $field;
+                        $findme   = '.';
+                        $pos = strpos($mystring, $findme);
+    
+                        if ($pos === false) {
+                            $value = $mystring;
+                        }
+                        else {
+                            $value = str_replace(".", "-", $mystring);
+                            
+                            array_push($GLOBALS['exchange_list'],json_encode($mystring));
+                            array_push($GLOBALS['changed_list'],json_encode($value));
+                        }
+                        if ($field == '') {
+                            $value = "empty";
+                        }
+                        $table->text(trim($value))->nullable();
+                        $keyArr[] = trim($value);
+                    }
+                });
+            }
+    
+            foreach ($data as $key => $record) {
+                if ($key != 0) {
+                    global $keyArr;
+                    $record_str = json_encode($record);
+                
+                    if (count($GLOBALS['exchange_list']) > 0) {
+                        for ($i=0; $i < count($GLOBALS['exchange_list']); $i++) {
+                            $exchange = $GLOBALS['exchange_list'][$i];
+                            $changed = $GLOBALS['changed_list'][$i];
+                            $record_str = str_replace($exchange, $changed , $record_str);
+                        }
+                    }
+
+                    $resArr = json_decode($record_str, true); 
+                    array_unshift($resArr, $key);
+                    $insertArr = array_combine($keyArr, $resArr);
+                    DB::table($db_table)->insert($insertArr);
+                }
+            }
+        }
+
+        return redirect()->back();
+    }
 }

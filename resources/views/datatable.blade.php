@@ -43,6 +43,10 @@
                     {
                         text: 'Reload data',
                         className: 'btn btn-sm btn-primary reload-data'
+                    },
+                    {
+                        text: 'CSV Upload ',
+                        className: 'btn btn-sm btn-primary csv-upload'
                     }
                 ],
                 dom: "<'row'<'col-sm-12'<'text-center bg-body-light py-2 mb-2'B>>>" +
@@ -72,6 +76,14 @@
                 }
             });
         });
+
+        $(document).on('click', '.csv-upload', function(){
+            $("#csv").click();
+        });
+
+        $(document).on('change', '#csv', function() {
+            $("#csv-upload").submit();
+        })
     </script>
 @endsection
 
@@ -112,6 +124,10 @@
                     <tbody>
                     </tbody>
                 </table>
+                <form action="{{ route($tab_en.'.csv.upload', $datasets) }}" method="POST" enctype="multipart/form-data" style="display: none;" id="csv-upload">
+                    {{ csrf_field() }}
+                    <input type="file" name="csv" id="csv" />
+                </form>
             </div>
         </div>
         <!-- END Dynamic Table with Export Buttons -->
