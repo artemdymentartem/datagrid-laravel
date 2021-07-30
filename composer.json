@@ -13,7 +13,8 @@
         "guzzlehttp/guzzle": "^7.3",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
-        "madnest/madzipper": "^1.1"
+        "madnest/madzipper": "^1.1",
+        "rap2hpoutre/fast-excel": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

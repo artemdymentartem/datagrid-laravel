@@ -377,17 +377,15 @@ class AbandonController extends Controller
         // 200MB in Bytes
         $maxFileSize = 209715200; 
 
+        $path = $file->storeAs('public/uploads', $filename);
+        
         // Check file extension
         if(in_array(strtolower($extension),$valid_extension)){
-            if ($request->has('header')) {
-                $data = Excel::load($tempPath, function($reader) {})->get()->toArray();
-            } else {
-                $data = array_map('str_getcsv', file($tempPath));
-            }
+            $data = (new FastExcel)->import("storage/uploads/" . $filename);
         }
 
         if (count($data) > 0) {
-            $fields = $data[0];
+            $fields = array_keys($data[0]);
             $keyArr = array();
             if (!Schema::hasTable($db_table)) {
                 Schema::create($db_table, function($table) use($fields)

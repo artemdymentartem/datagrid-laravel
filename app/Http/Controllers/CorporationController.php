@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use DB;
 use Schema;
 use Maatwebsite\Excel\Facades\Excel;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class CorporationController extends Controller
 {
@@ -658,14 +659,15 @@ class CorporationController extends Controller
         // 200MB in Bytes
         $maxFileSize = 209715200; 
 
+        $path = $file->storeAs('public/uploads', $filename);
+        
         // Check file extension
         if(in_array(strtolower($extension),$valid_extension)){
-            $data = Excel::load($tempPath, function($reader) {})->get()->toArray();
+            $data = (new FastExcel)->import("storage/uploads/" . $filename);
         }
 
         if (count($data) > 0) {
-            $fields = $data[0];
-            dd($data);
+            $fields = array_keys($data[0]);
             $keyArr = array();
             if (!Schema::hasTable($db_table)) {
                 Schema::create($db_table, function($table) use($fields)
