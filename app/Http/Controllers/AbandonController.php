@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use DB;
 use Schema;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class AbandonController extends Controller
 {
@@ -440,5 +441,12 @@ class AbandonController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function csvDownload(Request $request, $datasets)
+    {
+        $db_table = "abandon_" . $datasets;
+        $users = DB::table($db_table)->get();
+        return (new FastExcel($users))->download('datatable_abandon.csv');
     }
 }

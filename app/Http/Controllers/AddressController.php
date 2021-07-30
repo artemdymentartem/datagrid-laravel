@@ -8,6 +8,7 @@ use DB;
 use Schema;
 use Madzipper;
 use Storage;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class AddressController extends Controller
 {
@@ -530,5 +531,12 @@ class AddressController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function csvDownload(Request $request, $datasets)
+    {
+        $db_table = "address_" . $datasets;
+        $users = DB::table($db_table)->get();
+        return (new FastExcel($users))->download('datatable_address.csv');
     }
 }

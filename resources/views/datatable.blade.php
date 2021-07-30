@@ -38,7 +38,7 @@
                 columns: columns,
                 buttons: [
                     { extend: 'copy', className: 'btn btn-sm btn-primary' },
-                    { extend: 'csv', className: 'btn btn-sm btn-primary' },
+                    { text: 'CSV', className: 'btn btn-sm btn-primary csv-download' },
                     { extend: 'print', className: 'btn btn-sm btn-primary' },
                     {
                         text: 'Reload data',
@@ -53,6 +53,7 @@
                     "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
             });
         });
+
         $(document).on('click', '.reload-data', function(){
             Dashmix.helpers('notify', {type: 'success', icon: 'fa fa-reload mr-1', message: 'Reload data started in background!'});
             $.ajaxSetup({
@@ -84,6 +85,10 @@
         $(document).on('change', '#csv', function() {
             $("#csv-upload").submit();
         })
+
+        $(document).on('click', '.csv-download', function(e){
+            window.location="/{{$tab_en}}/csvDownload/{{$datasets}}"
+        });
     </script>
 @endsection
 

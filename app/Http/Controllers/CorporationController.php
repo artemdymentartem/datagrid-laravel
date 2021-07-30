@@ -723,4 +723,11 @@ class CorporationController extends Controller
 
         return redirect()->back();
     }
+
+    public function csvDownload(Request $request, $datasets)
+    {
+        $db_table = "corporation_" . $datasets;
+        $users = DB::table($db_table)->get();
+        return (new FastExcel($users))->download('datatable_corporation.csv');
+    }
 }
