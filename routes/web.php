@@ -56,3 +56,4 @@ Route::get('/abandon/csvDownload/{datasets}', 'AbandonController@csvDownload')->
 Route::get('/map', 'MapController@index');
 
 Route::get('/link', 'LinkController@index');
+Route::get('/link/map', 'LinkController@map');
