@@ -663,11 +663,15 @@ class CorporationController extends Controller
         
         // Check file extension
         if(in_array(strtolower($extension),$valid_extension)){
-            $data = (new FastExcel)->import("storage/uploads/" . $filename);
+            if ($request->has('header')) {
+                $data = Excel::load($tempPath, function($reader) {})->get()->toArray();
+            } else {
+                $data = array_map('str_getcsv', file($tempPath));
+            }
         }
 
         if (count($data) > 0) {
-            $fields = array_keys($data[0]);
+            $fields = $data[0];
             $keyArr = array();
             if (!Schema::hasTable($db_table)) {
                 Schema::create($db_table, function($table) use($fields)
@@ -703,7 +707,8 @@ class CorporationController extends Controller
             foreach ($data as $key => $record) {
                 if ($key != 0) {
                     global $keyArr;
-                    $record_str = json_encode($record);
+                    $record = array_map('utf8_encode', $record);
+                    $record_str = json_encode($record, JSON_UNESCAPED_UNICODE);
                 
                     if (count($GLOBALS['exchange_list']) > 0) {
                         for ($i=0; $i < count($GLOBALS['exchange_list']); $i++) {
@@ -712,7 +717,6 @@ class CorporationController extends Controller
                             $record_str = str_replace($exchange, $changed , $record_str);
                         }
                     }
-
                     $resArr = json_decode($record_str, true); 
                     array_unshift($resArr, $key);
                     $insertArr = array_combine($keyArr, $resArr);
@@ -720,7 +724,6 @@ class CorporationController extends Controller
                 }
             }
         }
-
         return redirect()->back();
     }
 
