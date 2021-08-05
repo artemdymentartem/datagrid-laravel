@@ -490,10 +490,11 @@ class PersonController extends Controller
         if (count($data) > 0) {
             $fields = $data[0];
             $keyArr = array();
+            $key_remove_count = 0;
             if (!Schema::hasTable($db_table)) {
                 Schema::create($db_table, function($table) use($fields)
                 {
-                    global $keyArr;
+                    global $keyArr, $key_remove_count;
                     $keyArr[] = "_id";
                     $GLOBALS['exchange_list'] = array();
                     $GLOBALS['changed_list'] = array();
@@ -512,18 +513,20 @@ class PersonController extends Controller
                             array_push($GLOBALS['exchange_list'],json_encode($mystring));
                             array_push($GLOBALS['changed_list'],json_encode($value));
                         }
-                        if ($field == '') {
-                            $value = "empty";
+                        if ($field != '') {
+                            $table->text(trim($value))->nullable();
+                            $keyArr[] = trim($value);
+                        } else {
+                            $key_remove_count ++;
                         }
-                        $table->text(trim($value))->nullable();
-                        $keyArr[] = trim($value);
+                        
                     }
                 });
             }
     
             foreach ($data as $key => $record) {
                 if ($key != 0) {
-                    global $keyArr;
+                    global $keyArr, $key_remove_count;
                     $record = array_map('utf8_encode', $record);
                     $record_str = json_encode($record, JSON_UNESCAPED_UNICODE);
                 
@@ -534,9 +537,14 @@ class PersonController extends Controller
                             $record_str = str_replace($exchange, $changed , $record_str);
                         }
                     }
+
                     $resArr = json_decode($record_str, true); 
                     $resArr = array_map('utf8_decode', $resArr);
+                    
                     array_unshift($resArr, $key);
+                    for ($i=0; $i < $key_remove_count; $i++) { 
+                        array_pop($resArr);
+                    }
                     $insertArr = array_combine($keyArr, $resArr);
                     DB::table($db_table)->insert($insertArr);
                 }
