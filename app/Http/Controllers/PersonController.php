@@ -536,6 +536,7 @@ class PersonController extends Controller
                     }
                     $resArr = json_decode($record_str, true); 
                     array_unshift($resArr, $key);
+                    $resArr = array_map('utf8_decode', $resArr);
                     $insertArr = array_combine($keyArr, $resArr);
                     DB::table($db_table)->insert($insertArr);
                 }
