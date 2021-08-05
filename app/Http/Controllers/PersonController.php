@@ -479,6 +479,7 @@ class PersonController extends Controller
         $maxFileSize = 209715200; 
 
         $path = $file->store('uploads','public');
+        dd($path);
         
         // Check file extension
         if(in_array(strtolower($extension),$valid_extension)){
