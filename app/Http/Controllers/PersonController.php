@@ -8,6 +8,8 @@ use DB;
 use Schema;
 use Maatwebsite\Excel\Facades\Excel;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Storage;
+use File;
 
 class PersonController extends Controller
 {
@@ -476,14 +478,14 @@ class PersonController extends Controller
         // 200MB in Bytes
         $maxFileSize = 209715200; 
 
-        $path = $file->storeAs('public/uploads', $filename);
+        Storage::disk('public')->putFileAs("uploads", $file, $filename);
         
         // Check file extension
         if(in_array(strtolower($extension),$valid_extension)){
             if ($request->has('header')) {
                 $data = Excel::load($tempPath, function($reader) {})->get()->toArray();
             } else {
-                $data = array_map('str_getcsv', file($tempPath));
+                $data = array_map('str_getcsv', file(public_path('storage/uploads/'.$filename)));
             }
         }
 
@@ -536,7 +538,6 @@ class PersonController extends Controller
                     }
                     $resArr = json_decode($record_str, true); 
                     array_unshift($resArr, $key);
-                    $resArr = array_map('utf8_decode', $resArr);
                     $insertArr = array_combine($keyArr, $resArr);
                     DB::table($db_table)->insert($insertArr);
                 }
