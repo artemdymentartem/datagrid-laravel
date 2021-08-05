@@ -322,24 +322,24 @@ class PersonController extends Controller
                     case 'person_pinkashakablanim':
                         $fields = [
                             "_id" => "_id",
-                            "num1" => "מספר יישות",
-                            "name1" => "שם יישות",
-                            "num2" => "מספר קבלן",
-                            "name2" => "שם יישוב",
-                            "name3" => "שם רחוב",
-                            "num3" => "מספר בית",
-                            "date1" => "תאריך רישום",
-                            "phone" => "מספר טלפון",
-                            "email" => "דואר אלקטרוני",
-                            "num4" => "מספר ענף",
-                            "description" => "תיאור ענף",
-                            "group" => "קבוצה",
-                            "classification" => "סיווג",
-                            "date2" => "סיווג מתאריך",
-                            "num5" => "היקף מקסימאלי באלפי שח",
-                            "contractor" => "קבלן מוכר",
-                            "name4" => "עובדים בענף",
-                            "note" => "הערה"
+                            "num1" => "MISPAR_YESHUT",
+                            "name1" => "SHEM_YESHUT",
+                            "num2" => "MISPAR_KABLAN",
+                            "name2" => "SHEM_YISHUV",
+                            "name3" => "SHEM_REHOV",
+                            "num3" => "MISPAR_BAIT",
+                            "date1" => "CREATE_DATE",
+                            "phone" => "MISPAR_TEL",
+                            "email" => "EMAIL",
+                            "num4" => "KOD_ANAF",
+                            "description" => "TEUR_ANAF",
+                            "group" => "KVUTZA",
+                            "classification" => "SIVUG",
+                            "date2" => "TARICH_SUG",
+                            "num5" => "HEKEF",
+                            "contractor" => "KABLAN_MUKAR",
+                            "name4" => "OVDIM",
+                            "note" => "HEARA"
                         ];
                         break;
                     case 'person_cpalist':
