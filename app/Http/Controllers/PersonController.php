@@ -478,7 +478,7 @@ class PersonController extends Controller
         // 200MB in Bytes
         $maxFileSize = 209715200; 
 
-        Storage::disk('public')->putFileAs("uploads", $file, $filename);
+        $path = $request->csv->store('storage/uploads','public');
         
         // Check file extension
         if(in_array(strtolower($extension),$valid_extension)){
