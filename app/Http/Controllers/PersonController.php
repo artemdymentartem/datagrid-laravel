@@ -478,14 +478,14 @@ class PersonController extends Controller
         // 200MB in Bytes
         $maxFileSize = 209715200; 
 
-        $path = $file->store('storage/uploads','public');
+        $path = $file->store('uploads','public');
         
         // Check file extension
         if(in_array(strtolower($extension),$valid_extension)){
             if ($request->has('header')) {
                 $data = Excel::load($tempPath, function($reader) {})->get()->toArray();
             } else {
-                $data = array_map('str_getcsv', file($path));
+                $data = array_map('str_getcsv', file(public_path('storage/'.$path)));
             }
         }
 
